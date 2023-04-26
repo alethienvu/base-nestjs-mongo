@@ -1,6 +1,6 @@
 import { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
 import { Response } from 'express';
-import { infoLog } from 'src/shared/Logger';
+import { infoLog } from 'src/shared/logger';
 import { determineErrorResponseAndStatus } from 'src/shared/errors';
 import { reply } from 'src/shared/helpers';
 
