@@ -1,0 +1,35 @@
+service:
+  name: npm_package_name
+  description: npm_package_description
+  node_env: NODE_ENV
+  baseUrl: APP_PREFIX
+  docsBaseUrl: APP_DOCS
+  jwt_access_token_secret: JWT_ACCESS_TOKEN_SECRET
+  jwt_access_token_expiration_time: JWT_ACCESS_TOKEN_EXPIRATION_TIME
+  jwt_refresh_token_secret: JWT_REFRESH_TOKEN_SECRET
+  jwt_refresh_token_expiration_time: JWT_REFRESH_TOKEN_EXPIRATION_TIME
+  api_version: npm_package_version
+  app_version: npm_package_version
+
+server:
+  host: SERVER_HOST
+  port: SERVER_PORT
+  hostname: SERVER_HOSTNAME
+  swaggerSchema: SWAGGER_SCHEMA
+
+mongodb:
+  uri: MONGODB_URI
+
+redis:
+  host: REDIS_HOST
+  port: REDIS_PORT
+
+mail:
+  account: MAIL_ACCOUNT
+  password: MAIL_PASSWORD
+  from: MAIL_FROM
+  service: MAIL_SERVICE
+  enable: MAIL_ENABLE
+
+logger:
+  enabled: LOGGER_ENABLED

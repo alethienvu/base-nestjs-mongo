@@ -1,0 +1,37 @@
+{
+  "paths": {
+    "/api/v1": {
+      "get": {
+        "operationId": "AppController_getHello",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    }
+  },
+  "info": {
+    "title": "base-nestjs-mongo API spec",
+    "description": "Base nestjs mongo | [swagger.json](swagger.json) | [swagger-2.0.json](swagger-2.0.json)",
+    "version": "0.0.1",
+    "contact": {}
+  },
+  "tags": [],
+  "swagger": "2.0",
+  "host": "localhost:3000",
+  "schemes": [
+    "http"
+  ],
+  "basePath": "/",
+  "definitions": {},
+  "securityDefinitions": {
+    "access-token": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "access-token"
+    }
+  },
+  "x-components": {}
+}
