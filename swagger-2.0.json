@@ -1,14 +1,183 @@
 {
   "paths": {
-    "/api/v1": {
+    "/api/v1/auth/current": {
       "get": {
-        "operationId": "AppController_getHello",
+        "operationId": "AuthController_currentUser",
         "parameters": [],
         "responses": {
           "200": {
             "description": ""
           }
-        }
+        },
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "operationId": "AuthController_login",
+        "parameters": [
+          {
+            "required": true,
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/LoginDto"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/api/v1/auth/refresh-access-token": {
+      "post": {
+        "operationId": "AuthController_refreshAccessToken",
+        "parameters": [
+          {
+            "required": true,
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/RefreshAccessTokenDto"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "access-token": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/api/v1/user/signup": {
+      "post": {
+        "operationId": "sign-up",
+        "summary": "Signup",
+        "description": "Signup",
+        "parameters": [
+          {
+            "required": true,
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/CreateUserDto"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/api/v1/user/info": {
+      "put": {
+        "operationId": "update",
+        "summary": "Update user infomation",
+        "description": "Update user infomation",
+        "parameters": [
+          {
+            "required": true,
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateUserDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ]
+      }
+    },
+    "/api/v1/user/password": {
+      "put": {
+        "operationId": "change-password",
+        "summary": "Change password",
+        "description": "Change password",
+        "parameters": [
+          {
+            "required": true,
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdatePassWordDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "User"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ]
       }
     }
   },
@@ -25,8 +194,97 @@
     "http"
   ],
   "basePath": "/",
-  "definitions": {},
+  "definitions": {
+    "LoginDto": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "admin@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "123456@Abc"
+        }
+      },
+      "required": [
+        "email",
+        "password"
+      ]
+    },
+    "RefreshAccessTokenDto": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string"
+        },
+        "refreshToken": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "accessToken",
+        "refreshToken"
+      ]
+    },
+    "CreateUserDto": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "user@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "123456@Abc"
+        }
+      },
+      "required": [
+        "email",
+        "password"
+      ]
+    },
+    "UpdateUserDto": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "last_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "address",
+        "first_name",
+        "last_name"
+      ]
+    },
+    "UpdatePassWordDto": {
+      "type": "object",
+      "properties": {
+        "currently_pass": {
+          "type": "string"
+        },
+        "new_pass": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "currently_pass",
+        "new_pass"
+      ]
+    }
+  },
   "securityDefinitions": {
+    "bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    },
     "access-token": {
       "type": "apiKey",
       "in": "header",

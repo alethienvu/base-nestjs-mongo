@@ -18,6 +18,7 @@ export async function initializeSwagger(app: INestApplication) {
     )
     .setVersion(apiVersion)
     .addServer(`${config.get('server.swaggerSchema')}://${config.get('server.hostname')}`)
+    .addBearerAuth()
     .addApiKey(null, 'access-token')
     .build();
 

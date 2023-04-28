@@ -7,9 +7,15 @@ import {
   GatewayTimeoutException,
   InternalServerErrorException,
   NotFoundException,
+  ValidationError,
 } from '@nestjs/common';
-
+import iterate from 'iterare';
+import * as _ from 'lodash';
 import { IGeneralErrorShape, ErrorCode } from './errors.interface';
+import { ErrorResponse } from './error-response.dto';
+import { BaseError } from './base.error';
+import { InputValidationError } from 'src/shared/common.errors';
+import { isObject } from 'class-validator';
 
 export const BASE_ERROR_CODE = '03';
 const GROUP_ERROR_CODE = '03';
@@ -21,6 +27,11 @@ export const Errors = {
     message: 'Internal server error occurred',
     statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
     errorCode: getErrorCode(ErrorCode.INTERNAL_SERVER_ERROR),
+  },
+  UNAUTHORIZED: {
+    message: 'Unauthorized user.',
+    statusCode: HttpStatus.UNAUTHORIZED,
+    errorCode: getErrorCode(ErrorCode.GENERAL_UNAUTHORIZED_EXCEPTION),
   },
   SERVICE_UNAVAILABLE: {
     message: 'Service Temporarily Unavailable',
@@ -58,14 +69,9 @@ export const Errors = {
     errorCode: getErrorCode(ErrorCode.BAD_GATEWAY),
   },
   GATEWAY_TIMEOUT: {
-    message: 'Gateway TImeout',
+    message: 'Gateway Timeout',
     statusCode: HttpStatus.GATEWAY_TIMEOUT,
     errorCode: getErrorCode(ErrorCode.GATEWAY_TIMEOUT),
-  },
-  GET_ACCOUNTS_PROFILE_FAILED: {
-    message: 'Failed to get user profile',
-    statusCode: HttpStatus.BAD_REQUEST,
-    errorCode: getErrorCode(ErrorCode.GET_ACCOUNTS_PROFILE_FAILED),
   },
   EMAIL_FORMAT_IS_NOT_VALID: {
     message: 'Email format is not valid',
@@ -82,10 +88,15 @@ export const Errors = {
     statusCode: HttpStatus.BAD_REQUEST,
     errorCode: getErrorCode(ErrorCode.PHONE_IS_ALREADY_TAKEN),
   },
-  EMAIL_OR_PHONE_REQUIRED: {
-    message: 'Email or phone must be provided',
-    statusCode: HttpStatus.BAD_REQUEST,
-    errorCode: getErrorCode(ErrorCode.EMAIL_OR_PHONE_REQUIRED),
+  USER_IS_LOCKED: {
+    message: 'User is locked',
+    statusCode: HttpStatus.FORBIDDEN,
+    errorCode: getErrorCode(ErrorCode.USER_IS_LOCKED),
+  },
+  ACCOUNT_NOT_FOUND: {
+    message: 'Not found user',
+    statusCode: HttpStatus.NOT_FOUND,
+    errorCode: getErrorCode(ErrorCode.ACCOUNT_NOT_FOUND),
   },
 };
 
@@ -122,4 +133,92 @@ export function getHttpException(err: IGeneralErrorShape): HttpException {
     default:
       return new InternalServerErrorException(err);
   }
+}
+export function determineErrorResponseAndStatus(exception: any): {
+  response: any;
+  statusCode: HttpStatus;
+} {
+  let errorCode = ErrorCode.INTERNAL_SERVER_ERROR;
+  let { statusCode, message } = {
+    message: 'Internal server error',
+    statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+  };
+  let meta = {};
+  let response: any = new ErrorResponse({
+    errorCode,
+    statusCode,
+    message,
+    meta,
+  });
+
+  if (exception instanceof BaseError) {
+    errorCode = exception.errorCode;
+    statusCode = exception.statusCode;
+    message = exception.message;
+    meta = exception.data ? exception.data.meta : undefined;
+    const errors =
+      exception instanceof InputValidationError && exception.errors
+        ? flattenValidationErrors(exception.errors)
+        : undefined;
+    response =
+      exception.response ||
+      new ErrorResponse({
+        errorCode,
+        statusCode,
+        message,
+        errors,
+        meta,
+      });
+  } else if (exception instanceof HttpException) {
+    statusCode = exception.getStatus();
+    if (isObject(exception.getResponse())) {
+      response = exception.getResponse() as any;
+    } else {
+      message = exception.getResponse() as string;
+      response = new ErrorResponse({
+        errorCode,
+        statusCode,
+        message,
+      });
+    }
+  }
+
+  return { response, statusCode };
+}
+export function flattenValidationErrors(validationErrors: ValidationError[]): string[] {
+  return iterate(validationErrors)
+    .map(mapChildrenToValidationErrors)
+    .flatten()
+    .filter((item: any) => _.isObject(item.constraints))
+    .map((item: any) => _.values(item.constraints))
+    .flatten()
+    .toArray();
+}
+function mapChildrenToValidationErrors(error: ValidationError): ValidationError[] {
+  if (!(error.children && error.children.length)) {
+    return [error];
+  }
+  const validationErrors = [];
+  for (const item of error.children) {
+    if (item.children && item.children.length) {
+      validationErrors.push(...mapChildrenToValidationErrors(item));
+    }
+    validationErrors.push(prependConstraintsWithParentProp(error, item));
+  }
+  return validationErrors;
+}
+function prependConstraintsWithParentProp(
+  parentError: ValidationError,
+  error: ValidationError,
+): ValidationError {
+  const constraints = {};
+  for (const key in error.constraints) {
+    if (error.constraints.hasOwnProperty(key)) {
+      constraints[key] = `${parentError.property}.${error.constraints[key]}`;
+    }
+  }
+  return {
+    ...error,
+    constraints,
+  };
 }
