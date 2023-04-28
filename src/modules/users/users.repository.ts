@@ -63,6 +63,10 @@ export class UsersRepository implements OnApplicationBootstrap {
     return this.model.findOne(findParams).exec();
   }
 
+  async findOneWithPass(findParams) {
+    return this.model.findOne(findParams).select('+password').exec();
+  }
+
   async updateOne(conditions, doc: any, options?: QueryOptions): Promise<IUser> {
     return this.model.findOneAndUpdate(conditions, doc, options);
   }

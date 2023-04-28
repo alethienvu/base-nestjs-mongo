@@ -7,12 +7,13 @@ import { ResponseLogin } from 'src/modules/auth/dto/response-login.dto';
 import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
 // import { MailService } from 'src/modules/mail/mail.service';
 import { UsersService } from 'src/modules/users/users.service';
-import { IUserBaseInfo } from '../users/users.interface';
+import { IUser } from '../users/users.interface';
 import { UserID } from 'src/shared/decorators/get-user-id.decorator';
+import { ACCESS_TOKEN_HEADER_NAME } from 'src/shared/constants';
 
 @Controller('auth')
 @ApiTags('Auth')
-@ApiBearerAuth('access-token')
+@ApiBearerAuth(ACCESS_TOKEN_HEADER_NAME)
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
@@ -21,7 +22,7 @@ export class AuthController {
 
   @Get('/current')
   @UseGuards(JwtAuthGuard)
-  async currentUser(@UserID() userId: string): Promise<IUserBaseInfo> {
+  async currentUser(@UserID() userId: string): Promise<IUser> {
     const user = await this.userService.findUserById(userId);
     return user;
   }

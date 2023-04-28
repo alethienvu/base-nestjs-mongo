@@ -5,9 +5,10 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { UserID } from 'src/shared/decorators/get-user-id.decorator';
 import { UpdatePassWordDto, UpdateUserDto } from './dtos/updateUser.dto';
+import { ACCESS_TOKEN_HEADER_NAME } from 'src/shared/constants';
 
 @Controller('user')
-@ApiBearerAuth()
+@ApiBearerAuth(ACCESS_TOKEN_HEADER_NAME)
 @ApiTags('User')
 export class UsersController {
   constructor(private userService: UsersService) {}

@@ -10,6 +10,6 @@ UsersSchema.add({
   last_name: { type: String },
   role: { type: String, required: true },
   status: { type: String, required: true },
-  password: { type: String },
+  password: { type: String, select: false },
 });
 export { UsersSchema };

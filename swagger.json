@@ -104,7 +104,7 @@
         ],
         "security": [
           {
-            "bearer": []
+            "access-token": []
           }
         ]
       }
@@ -135,7 +135,7 @@
         ],
         "security": [
           {
-            "bearer": []
+            "access-token": []
           }
         ]
       }
@@ -166,7 +166,7 @@
         ],
         "security": [
           {
-            "bearer": []
+            "access-token": []
           }
         ]
       }

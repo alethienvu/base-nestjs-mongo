@@ -106,7 +106,7 @@
         ],
         "security": [
           {
-            "bearer": []
+            "access-token": []
           }
         ],
         "consumes": [
@@ -139,7 +139,7 @@
         ],
         "security": [
           {
-            "bearer": []
+            "access-token": []
           }
         ],
         "consumes": [
@@ -172,7 +172,7 @@
         ],
         "security": [
           {
-            "bearer": []
+            "access-token": []
           }
         ],
         "consumes": [
