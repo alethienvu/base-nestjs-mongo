@@ -106,15 +106,15 @@
     "testEnvironment": "node"
   },
   "lint-staged": {
-    "*.ts": [
-      "eslint",
-      "prettier --check"
+    "*.{ts,tsx,json,scss,md,html}": [
+      "prettier --write",
+      "git add"
     ]
   },
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged && pwd && chmod 755 ./.husky/check-branch-name.sh && ./.husky/check-branch-name.sh"
+      "pre-commit": "npm run lint && lint-staged && pwd && chmod 755 ./.husky/check-branch-name.sh && ./.husky/check-branch-name.sh"
     }
   }
 }

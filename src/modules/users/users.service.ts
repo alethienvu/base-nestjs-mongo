@@ -11,9 +11,7 @@ import { UpdatePassWordDto, UpdateUserDto } from './dtos/updateUser.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    private readonly userRepository: UsersRepository,
-  ) {}
+  constructor(private readonly userRepository: UsersRepository) {}
 
   /**
    *
@@ -86,11 +84,14 @@ export class UsersService {
       currentUser.last_name = updateUser.last_name;
     }
     const updatedUser = await this.userRepository.save(currentUser);
-    console.log("🚀🚀🚀 ~ file: users.service.ts:89 ~ UsersService ~ updateUser ~ updatedUser:", updatedUser);
+    console.log(
+      '🚀🚀🚀 ~ file: users.service.ts:89 ~ UsersService ~ updateUser ~ updatedUser:',
+      updatedUser,
+    );
     return updatedUser;
   }
 
-  async changePassWord(id: string, updatePassWordDto: UpdatePassWordDto){
+  async changePassWord(id: string, updatePassWordDto: UpdatePassWordDto) {
     const currentUser = await this.findUserById(id);
     const { currently_pass, new_pass } = updatePassWordDto;
     const compare_pass = crypto.createHmac('sha256', currently_pass).digest('hex');
@@ -99,7 +100,10 @@ export class UsersService {
     }
     currentUser.password = crypto.createHmac('sha256', new_pass).digest('hex');
     const updatedUser = await this.userRepository.save(currentUser);
-    console.log("🚀🚀🚀 ~ file: users.service.ts:102 ~ UsersService ~ changePassWord ~ updatedUser:", updatedUser);
+    console.log(
+      '🚀🚀🚀 ~ file: users.service.ts:102 ~ UsersService ~ changePassWord ~ updatedUser:',
+      updatedUser,
+    );
     return updatedUser;
   }
 }
