@@ -20,9 +20,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload): Promise<IUser> {
-    console.log("🚀🚀🚀 ~ file: jwt.strategy.ts:23 ~ JwtStrategy ~ validate ~ payload:", payload);
+    console.log('🚀🚀🚀 ~ file: jwt.strategy.ts:23 ~ JwtStrategy ~ validate ~ payload:', payload);
     const user = await this.userService.findUserById(payload.userId);
-    console.log("🚀🚀🚀 ~ file: jwt.strategy.ts:24 ~ JwtStrategy ~ validate ~ user:", user);
+    console.log('🚀🚀🚀 ~ file: jwt.strategy.ts:24 ~ JwtStrategy ~ validate ~ user:', user);
     if (!user) {
       throw new BadRequestException(Errors[ErrorCode.GENERAL_UNAUTHORIZED_EXCEPTION]);
     }
