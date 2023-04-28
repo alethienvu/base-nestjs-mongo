@@ -1,8 +1,8 @@
 import { ArgumentsHost, ExceptionFilter } from '@nestjs/common';
 import { Response } from 'express';
 import { infoLog } from 'src/shared/logger';
-import { determineErrorResponseAndStatus } from 'src/shared/errors';
 import { reply } from 'src/shared/helpers';
+import { determineErrorResponseAndStatus } from 'src/errors/errors';
 
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: any, host: ArgumentsHost) {

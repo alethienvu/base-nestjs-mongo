@@ -1,7 +1,7 @@
 import { HttpStatus, PlainLiteralObject } from '@nestjs/common';
 import { Constructor } from '@nestjs/common/utils/merge-with-values.util';
-import { ErrorCode } from '../shared/errors';
 import { WError } from 'verror';
+import { ErrorCode } from './errors.interface';
 
 export abstract class BaseError<T> extends WError {
   /**

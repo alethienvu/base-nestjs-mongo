@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from './modules/config/config.module';
 import { LoggerModule } from 'nestjs-pino';
 import * as pino from 'pino';
@@ -8,10 +6,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { createMongooseOptions } from './shared/helpers';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
     ConfigModule,
+    AuthModule,
+    UsersModule,
     LoggerModule.forRootAsync({
       useFactory: async () => {
         return {
@@ -32,9 +34,7 @@ import { HttpExceptionFilter } from './filters/http-exception.filter';
       useFactory: () => createMongooseOptions('mongodb.uri'),
     }),
   ],
-  controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,

@@ -1,7 +1,8 @@
 import { HttpStatus, PlainLiteralObject } from '@nestjs/common';
 import { ValidationError } from 'class-validator';
 import { BaseError } from '../errors/base.error';
-import { ErrorCode, flattenValidationErrors } from './errors';
+import { flattenValidationErrors } from 'src/errors/errors';
+import { ErrorCode } from 'src/errors/errors.interface';
 
 export class BadRequestError extends BaseError<BadRequestError> {
   constructor(errorCode: ErrorCode, message?: string, cause?: Error, readonly response?: any) {
@@ -12,19 +13,19 @@ export class BadRequestError extends BaseError<BadRequestError> {
 
 export class UnauthorizedError extends BaseError<UnauthorizedError> {
   constructor(message?: string, cause?: Error, readonly response?: any) {
-    super(UnauthorizedError, ErrorCode.UNAUTHORIZED, message, cause);
+    super(UnauthorizedError, ErrorCode.GENERAL_UNAUTHORIZED_EXCEPTION, message, cause);
   }
 }
 
 export class ForbiddenError extends BaseError<ForbiddenError> {
   constructor(message?: string, cause?: Error, readonly response?: any) {
-    super(ForbiddenError, ErrorCode.FORBIDDEN, message, cause);
+    super(ForbiddenError, ErrorCode.GENERAL_FORBIDEN, message, cause);
   }
 }
 
 export class NotFoundError extends BaseError<NotFoundError> {
   constructor(message?: string, cause?: Error, readonly response?: any) {
-    super(NotFoundError, ErrorCode.NOT_FOUND, message, cause);
+    super(NotFoundError, ErrorCode.ACCOUNT_NOT_FOUND, message, cause);
   }
 }
 
