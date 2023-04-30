@@ -14,15 +14,3 @@ export interface IUserBase {
   password: string;
 }
 export interface IUser extends BaseDocument, IUserBase {}
-
-export interface IUserBaseInfo {
-  id: string;
-  email: string;
-  address?: string;
-  first_name?: string;
-  last_name?: string;
-  role: UserRole;
-  status: UserStatus;
-  createdAt?: Date;
-  updatedAt?: Date;
-}

@@ -46,6 +46,14 @@ export class UsersService {
     return user;
   }
 
+  async findUserWithPasswordById(id: string): Promise<IUser> {
+    const user = await this.userRepository.findOneWithPass({ id });
+    if (!user) {
+      throw new BadRequestException(Errors[ErrorCode.ACCOUNT_NOT_FOUND]);
+    }
+    return user;
+  }
+
   async createUser(createUserDto: CreateUserDto) {
     const { email, password } = createUserDto;
     const sameEmailAddress = await this.checkUserEmailAddressExisted(email);
@@ -84,15 +92,12 @@ export class UsersService {
       currentUser.last_name = updateUser.last_name;
     }
     const updatedUser = await this.userRepository.save(currentUser);
-    console.log(
-      '🚀🚀🚀 ~ file: users.service.ts:89 ~ UsersService ~ updateUser ~ updatedUser:',
-      updatedUser,
-    );
+
     return updatedUser;
   }
 
   async changePassWord(id: string, updatePassWordDto: UpdatePassWordDto) {
-    const currentUser = await this.findUserById(id);
+    const currentUser = await this.findUserWithPasswordById(id);
     const { currently_pass, new_pass } = updatePassWordDto;
     const compare_pass = crypto.createHmac('sha256', currently_pass).digest('hex');
     if (currentUser.password !== compare_pass) {
@@ -100,10 +105,6 @@ export class UsersService {
     }
     currentUser.password = crypto.createHmac('sha256', new_pass).digest('hex');
     const updatedUser = await this.userRepository.save(currentUser);
-    console.log(
-      '🚀🚀🚀 ~ file: users.service.ts:102 ~ UsersService ~ changePassWord ~ updatedUser:',
-      updatedUser,
-    );
     return updatedUser;
   }
 }
