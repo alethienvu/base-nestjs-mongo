@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from 'src/modules/auth/auth.service';
 import { LoginDto } from 'src/modules/auth/dto/login.dto';
 import { RefreshAccessTokenDto } from 'src/modules/auth/dto/refresh-access-token.dto';
@@ -21,6 +21,15 @@ export class AuthController {
   ) {}
 
   @Get('/current')
+  @ApiOperation({
+    operationId: 'current',
+    description: 'Get information of current user',
+    summary: 'Get information of current user',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Successful',
+  })
   @UseGuards(JwtAuthGuard)
   async currentUser(@UserID() userId: string): Promise<IUser> {
     const user = await this.userService.findUserById(userId);
@@ -28,11 +37,21 @@ export class AuthController {
   }
 
   @Post('login')
+  @ApiOperation({
+    operationId: 'login',
+    description: 'Login',
+    summary: 'Login',
+  })
   async login(@Body() loginDto: LoginDto): Promise<ResponseLogin> {
     return await this.authService.login(loginDto);
   }
 
   @Post('refresh-access-token')
+  @ApiOperation({
+    operationId: 'refresh-access-token',
+    description: 'Refresh access-token',
+    summary: 'Refresh access-token',
+  })
   @ApiBody({
     type: RefreshAccessTokenDto,
   })

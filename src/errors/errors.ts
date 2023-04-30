@@ -28,40 +28,10 @@ export const Errors = {
     statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
     errorCode: getErrorCode(ErrorCode.INTERNAL_SERVER_ERROR),
   },
-  UNAUTHORIZED: {
-    message: 'Unauthorized user.',
-    statusCode: HttpStatus.UNAUTHORIZED,
-    errorCode: getErrorCode(ErrorCode.GENERAL_UNAUTHORIZED_EXCEPTION),
-  },
   SERVICE_UNAVAILABLE: {
     message: 'Service Temporarily Unavailable',
     statusCode: HttpStatus.SERVICE_UNAVAILABLE,
     errorCode: getErrorCode(ErrorCode.SERVICE_UNAVAILABLE),
-  },
-  GENERAL_UNAUTHORIZED_EXCEPTION: {
-    message: 'An exception occurred during the authorization process',
-    statusCode: HttpStatus.UNAUTHORIZED,
-    errorCode: getErrorCode(ErrorCode.GENERAL_UNAUTHORIZED_EXCEPTION),
-  },
-  GENERAL_VALIDATION_EXCEPTION: {
-    message: 'Validation error',
-    statusCode: HttpStatus.BAD_REQUEST,
-    errorCode: getErrorCode(ErrorCode.GENERAL_VALIDATION_EXCEPTION),
-  },
-  ACCESS_TOKEN_HEADER_NOT_PROVIDED: {
-    message: 'An access-token header is required',
-    statusCode: HttpStatus.UNAUTHORIZED,
-    errorCode: getErrorCode(ErrorCode.ACCESS_TOKEN_HEADER_NOT_PROVIDED),
-  },
-  JWT_EXPIRED: {
-    message: 'Jwt token expired',
-    statusCode: HttpStatus.UNAUTHORIZED,
-    errorCode: getErrorCode(ErrorCode.JWT_EXPIRED),
-  },
-  NOT_VALID_JWT: {
-    message: 'Not valid Jwt',
-    statusCode: HttpStatus.UNAUTHORIZED,
-    errorCode: getErrorCode(ErrorCode.NOT_VALID_JWT),
   },
   BAD_GATEWAY: {
     message: 'Bad Gateway',
@@ -72,31 +42,6 @@ export const Errors = {
     message: 'Gateway Timeout',
     statusCode: HttpStatus.GATEWAY_TIMEOUT,
     errorCode: getErrorCode(ErrorCode.GATEWAY_TIMEOUT),
-  },
-  EMAIL_FORMAT_IS_NOT_VALID: {
-    message: 'Email format is not valid',
-    statusCode: HttpStatus.BAD_REQUEST,
-    errorCode: getErrorCode(ErrorCode.EMAIL_FORMAT_IS_NOT_VALID),
-  },
-  EMAIL_IS_ALREADY_TAKEN: {
-    message: 'Email is already taken',
-    statusCode: HttpStatus.BAD_REQUEST,
-    errorCode: getErrorCode(ErrorCode.EMAIL_IS_ALREADY_TAKEN),
-  },
-  PHONE_IS_ALREADY_TAKEN: {
-    message: 'Phone is already taken',
-    statusCode: HttpStatus.BAD_REQUEST,
-    errorCode: getErrorCode(ErrorCode.PHONE_IS_ALREADY_TAKEN),
-  },
-  USER_IS_LOCKED: {
-    message: 'User is locked',
-    statusCode: HttpStatus.FORBIDDEN,
-    errorCode: getErrorCode(ErrorCode.USER_IS_LOCKED),
-  },
-  ACCOUNT_NOT_FOUND: {
-    message: 'Not found user',
-    statusCode: HttpStatus.NOT_FOUND,
-    errorCode: getErrorCode(ErrorCode.ACCOUNT_NOT_FOUND),
   },
 };
 

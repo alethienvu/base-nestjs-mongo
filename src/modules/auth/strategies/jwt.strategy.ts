@@ -1,11 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { jwtConstants } from 'src/modules/auth/auth.constants';
 import { JwtPayload } from 'src/modules/auth/strategies/jwt.payload';
 import { UsersService } from 'src/modules/users/users.service';
-import { Errors } from 'src/errors/errors';
-import { ErrorCode } from 'src/errors/errors.interface';
 import { UserStatus } from 'src/shared/enum/users.const';
 import { IUser } from 'src/modules/users/users.interface';
 
@@ -20,15 +18,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload): Promise<IUser> {
-    console.log('🚀🚀🚀 ~ file: jwt.strategy.ts:23 ~ JwtStrategy ~ validate ~ payload:', payload);
     const user = await this.userService.findUserById(payload.userId);
-    console.log('🚀🚀🚀 ~ file: jwt.strategy.ts:24 ~ JwtStrategy ~ validate ~ user:', user);
     if (!user) {
-      throw new BadRequestException(Errors[ErrorCode.GENERAL_UNAUTHORIZED_EXCEPTION]);
+      throw new UnauthorizedException();
     }
 
     if (user.status == UserStatus.LOCKED) {
-      throw new BadRequestException(Errors[ErrorCode.USER_IS_LOCKED]);
+      throw new ForbiddenException(`User account is locked!`);
     }
 
     return user;

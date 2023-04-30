@@ -1,7 +1,5 @@
-import { BadRequestException, createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { createParamDecorator, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import jwtDecode from 'jwt-decode';
-import { Errors } from 'src/errors/errors';
-import { ErrorCode } from 'src/errors/errors.interface';
 import { JwtPayload } from 'src/modules/auth/strategies/jwt.payload';
 import { ACCESS_TOKEN_HEADER_NAME } from '../constants';
 /**
@@ -14,6 +12,6 @@ export const UserID = createParamDecorator((data: string, ctx: ExecutionContext)
     const payload: JwtPayload = jwtDecode(token);
     return payload.userId;
   } catch (e) {
-    throw new BadRequestException(Errors[ErrorCode.GENERAL_UNAUTHORIZED_EXCEPTION]);
+    throw new UnauthorizedException();
   }
 });
