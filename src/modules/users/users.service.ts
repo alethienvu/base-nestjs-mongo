@@ -1,8 +1,7 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
 import { IUser } from './users.interface';
-import { Errors } from 'src/errors/errors';
-import { ErrorCode } from 'src/errors/errors.interface';
+import { handleApiClientError } from 'src/errors/errors';
 import { CreateUserDto } from './dtos/createUser.dto';
 import * as crypto from 'crypto';
 import { v4 as uuidV4 } from 'uuid';
@@ -41,7 +40,7 @@ export class UsersService {
   async findUserById(id: string): Promise<IUser> {
     const user = await this.userRepository.findOne({ id });
     if (!user) {
-      throw new BadRequestException(Errors[ErrorCode.ACCOUNT_NOT_FOUND]);
+      throw new NotFoundException(`Not found user with id: ${id}`);
     }
     return user;
   }
@@ -49,7 +48,7 @@ export class UsersService {
   async findUserWithPasswordById(id: string): Promise<IUser> {
     const user = await this.userRepository.findOneWithPass({ id });
     if (!user) {
-      throw new BadRequestException(Errors[ErrorCode.ACCOUNT_NOT_FOUND]);
+      throw new NotFoundException(`Not found user with id: ${id}`);
     }
     return user;
   }
@@ -58,7 +57,7 @@ export class UsersService {
     const { email, password } = createUserDto;
     const sameEmailAddress = await this.checkUserEmailAddressExisted(email);
     if (!!sameEmailAddress) {
-      throw new BadRequestException(Errors[ErrorCode.EMAIL_IS_ALREADY_TAKEN]);
+      throw new BadRequestException(`Email is already taken`);
     }
     const hashPass = crypto.createHmac('sha256', password).digest('hex');
     const newUser = await this.userRepository.withTransaction(async (session) => {
@@ -74,7 +73,7 @@ export class UsersService {
           { session },
         )
         .catch((error) => {
-          throw new BadRequestException(`Create account for ${email} fail!`, error.message);
+          handleApiClientError(error);
         });
     });
     return newUser;
@@ -101,7 +100,7 @@ export class UsersService {
     const { currently_pass, new_pass } = updatePassWordDto;
     const compare_pass = crypto.createHmac('sha256', currently_pass).digest('hex');
     if (currentUser.password !== compare_pass) {
-      throw new BadRequestException(Errors[ErrorCode.GENERAL_UNAUTHORIZED_EXCEPTION]);
+      throw new BadRequestException(`Wrong pass`);
     }
     currentUser.password = crypto.createHmac('sha256', new_pass).digest('hex');
     const updatedUser = await this.userRepository.save(currentUser);

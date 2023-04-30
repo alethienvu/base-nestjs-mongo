@@ -2,11 +2,13 @@
   "paths": {
     "/api/v1/auth/current": {
       "get": {
-        "operationId": "AuthController_currentUser",
+        "operationId": "current",
+        "summary": "Get information of current user",
+        "description": "Get information of current user",
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Successful"
           }
         },
         "tags": [
@@ -21,7 +23,9 @@
     },
     "/api/v1/auth/login": {
       "post": {
-        "operationId": "AuthController_login",
+        "operationId": "login",
+        "summary": "Login",
+        "description": "Login",
         "parameters": [
           {
             "required": true,
@@ -52,7 +56,9 @@
     },
     "/api/v1/auth/refresh-access-token": {
       "post": {
-        "operationId": "AuthController_refreshAccessToken",
+        "operationId": "refresh-access-token",
+        "summary": "Refresh access-token",
+        "description": "Refresh access-token",
         "parameters": [
           {
             "required": true,

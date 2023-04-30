@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
@@ -10,8 +10,7 @@ import { ResponseLogin } from 'src/modules/auth/dto/response-login.dto';
 import { JwtPayload } from 'src/modules/auth/strategies/jwt.payload';
 import { UsersService } from 'src/modules/users/users.service';
 import { v4 as uuidv4 } from 'uuid';
-import { Errors } from 'src/errors/errors';
-import { ErrorCode } from 'src/errors/errors.interface';
+import * as crypto from 'crypto';
 import { IUser } from '../users/users.interface';
 
 @Injectable()
@@ -26,9 +25,15 @@ export class AuthService {
     let user: IUser;
 
     if (!(await this.userService.checkUserEmailAddressExisted(loginDto.email))) {
-      throw new BadRequestException(Errors[ErrorCode.EMAIL_IS_ALREADY_TAKEN]);
+      throw new BadRequestException(`Not found any user with email is: ${loginDto.email}`);
     } else {
       user = await this.userService.findUserByEmailAddress(loginDto.email);
+    }
+
+    const compare_pass = crypto.createHmac('sha256', loginDto.password).digest('hex');
+    const { password: savedPass } = await this.userService.findUserWithPasswordById(user?.id);
+    if (compare_pass !== savedPass) {
+      throw new BadRequestException(`Wrong password`);
     }
 
     const accessToken = this.generateAccessToken({ userId: user.id, role: user.role });
@@ -49,10 +54,10 @@ export class AuthService {
     const oldHashAccessToken = await this.cacheManager.get<string>(
       `${AUTH_CACHE_PREFIX}${refreshToken}`,
     );
-    if (!oldHashAccessToken) throw new BadRequestException(Errors[ErrorCode.JWT_EXPIRED]);
+    if (!oldHashAccessToken) throw new UnauthorizedException('JWT token is expired!');
 
     const hashAccessToken = createHash('sha256').update(accessToken).digest('hex');
-    if (hashAccessToken == oldHashAccessToken) {
+    if (hashAccessToken === oldHashAccessToken) {
       const oldPayload = await this.decodeAccessToken(accessToken);
       delete oldPayload.iat;
       delete oldPayload.exp;
@@ -63,7 +68,7 @@ export class AuthService {
         ...newAccessToken,
         ...newRefreshToken,
       };
-    } else throw new BadRequestException(Errors[ErrorCode.JWT_EXPIRED]);
+    } else throw new UnauthorizedException();
   }
 
   generateAccessToken(payload: JwtPayload): { accessToken: string } {
@@ -89,7 +94,6 @@ export class AuthService {
     return this.jwtService.verifyAsync(accessToken);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async decodeAccessToken(accessToken: string): Promise<JwtPayload | any> {
     return this.jwtService.decode(accessToken);
   }
