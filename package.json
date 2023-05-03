@@ -114,8 +114,7 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "npm run lint && lint-staged && pwd && chmod 755 ./.husky/check-branch-name.sh && ./.husky/check-branch-name.sh"
+      "pre-commit": "npm run lint && lint-staged"
     }
   }
 }
