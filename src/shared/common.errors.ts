@@ -1,8 +1,8 @@
 import { HttpStatus, PlainLiteralObject } from '@nestjs/common';
 import { ValidationError } from 'class-validator';
 import { BaseError } from '../errors/base.error';
-import { flattenValidationErrors } from 'src/errors/errors';
-import { ErrorCode } from 'src/errors/errors.interface';
+import { flattenValidationErrors } from '../errors/errors';
+import { ErrorCode } from '../errors/errors.interface';
 
 export class BadRequestError extends BaseError<BadRequestError> {
   constructor(errorCode: ErrorCode, message?: string, cause?: Error, readonly response?: any) {

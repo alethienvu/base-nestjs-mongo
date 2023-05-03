@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
 import { IUser } from './users.interface';
-import { handleApiClientError } from 'src/errors/errors';
+import { handleApiClientError } from '../../errors/errors';
 import { CreateUserDto } from './dtos/createUser.dto';
 import * as crypto from 'crypto';
 import { v4 as uuidV4 } from 'uuid';
-import { UserRole, UserStatus } from 'src/shared/enum/users.const';
+import { UserRole, UserStatus } from '../../shared/enum/users.const';
 import { UpdatePassWordDto, UpdateUserDto } from './dtos/updateUser.dto';
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import jwtDecode from 'jwt-decode';
-import { JwtPayload } from 'src/modules/auth/strategies/jwt.payload';
+import { JwtPayload } from '../../modules/auth/strategies/jwt.payload';
 import { ACCESS_TOKEN_HEADER_NAME } from '../constants';
 /**
  * This decorator get userId from headers

@@ -3,9 +3,9 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dtos/createUser.dto';
-import { UserID } from 'src/shared/decorators/get-user-id.decorator';
+import { UserID } from '../../shared/decorators/get-user-id.decorator';
 import { UpdatePassWordDto, UpdateUserDto } from './dtos/updateUser.dto';
-import { ACCESS_TOKEN_HEADER_NAME } from 'src/shared/constants';
+import { ACCESS_TOKEN_HEADER_NAME } from '../../shared/constants';
 
 @Controller('user')
 @ApiBearerAuth(ACCESS_TOKEN_HEADER_NAME)
