@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtPayload } from '../strategies/jwt.payload';
 import jwtDecode from 'jwt-decode';
-import { UserRole } from 'src/shared/enum/users.const';
+import { UserRole } from '../../../shared/enum/users.const';
 
 @Injectable()
 export class OnlyAdmin implements CanActivate {

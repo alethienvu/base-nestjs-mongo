@@ -1,15 +1,15 @@
 import { Body, Controller, Get, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AuthService } from 'src/modules/auth/auth.service';
-import { LoginDto } from 'src/modules/auth/dto/login.dto';
-import { RefreshAccessTokenDto } from 'src/modules/auth/dto/refresh-access-token.dto';
-import { ResponseLogin } from 'src/modules/auth/dto/response-login.dto';
-import { JwtAuthGuard } from 'src/modules/auth/guards/jwt-auth.guard';
-// import { MailService } from 'src/modules/mail/mail.service';
-import { UsersService } from 'src/modules/users/users.service';
+import { AuthService } from '../../modules/auth/auth.service';
+import { LoginDto } from '../../modules/auth/dto/login.dto';
+import { RefreshAccessTokenDto } from '../../modules/auth/dto/refresh-access-token.dto';
+import { ResponseLogin } from '../../modules/auth/dto/response-login.dto';
+import { JwtAuthGuard } from '../../modules/auth/guards/jwt-auth.guard';
+// import { MailService } from '../../modules/mail/mail.service';
+import { UsersService } from '../../modules/users/users.service';
 import { IUser } from '../users/users.interface';
-import { UserID } from 'src/shared/decorators/get-user-id.decorator';
-import { ACCESS_TOKEN_HEADER_NAME } from 'src/shared/constants';
+import { UserID } from '../../shared/decorators/get-user-id.decorator';
+import { ACCESS_TOKEN_HEADER_NAME } from '../../shared/constants';
 
 @Controller('auth')
 @ApiTags('Auth')

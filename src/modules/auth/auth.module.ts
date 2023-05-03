@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { UsersModule } from 'src/modules/users/users.module';
-import { jwtConstants } from 'src/modules/auth/auth.constants';
-import { AuthService } from 'src/modules/auth/auth.service';
-import { JwtStrategy } from 'src/modules/auth/strategies/jwt.strategy';
-import { AuthController } from 'src/modules/auth/auth.controller';
+import { UsersModule } from '../../modules/users/users.module';
+import { jwtConstants } from '../../modules/auth/auth.constants';
+import { AuthService } from '../../modules/auth/auth.service';
+import { JwtStrategy } from '../../modules/auth/strategies/jwt.strategy';
+import { AuthController } from '../../modules/auth/auth.controller';
 import { CacheModule } from '@nestjs/cache-manager';
-import { redisConfig } from 'src/configs/redis.config';
+import { redisConfig } from '../../configs/redis.config';
 import { UsersService } from '../users/users.service';
-// import { MailModule } from 'src/modules/mail/mail.module';
+// import { MailModule } from '../../modules/mail/mail.module';
 
 @Module({
   imports: [

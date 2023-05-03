@@ -14,7 +14,7 @@ import * as _ from 'lodash';
 import { IGeneralErrorShape, ErrorCode } from './errors.interface';
 import { ErrorResponse } from './error-response.dto';
 import { BaseError } from './base.error';
-import { InputValidationError } from 'src/shared/common.errors';
+import { InputValidationError } from '../shared/common.errors';
 import { isObject } from 'class-validator';
 
 export const BASE_ERROR_CODE = '03';

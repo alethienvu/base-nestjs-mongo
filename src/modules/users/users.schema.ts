@@ -1,4 +1,4 @@
-import { getBaseSchema } from 'src/shared/mongo.helper';
+import { getBaseSchema } from '../../shared/mongo.helper';
 import { IUser } from './users.interface';
 
 const UsersSchema = getBaseSchema<IUser>();

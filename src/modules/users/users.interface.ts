@@ -1,5 +1,5 @@
-import { UserRole, UserStatus } from 'src/shared/enum/users.const';
-import { BaseDocument } from 'src/shared/mongo.helper';
+import { UserRole, UserStatus } from '../../shared/enum/users.const';
+import { BaseDocument } from '../../shared/mongo.helper';
 
 export interface IUserBase {
   id: string;
