@@ -123,7 +123,7 @@
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "./.husky/pre-commit.sh"
+      "pre-commit": "lint-staged && pwd && chmod 755 ./.husky/pre-commit.sh && ./.husky/pre-commit.sh"
     }
   }
 }
