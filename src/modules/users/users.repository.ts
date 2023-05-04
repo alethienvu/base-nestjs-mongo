@@ -87,4 +87,7 @@ export class UsersRepository implements OnApplicationBootstrap {
       session.endSession();
     }
   }
+  async findWithCursor(conditions, options?: QueryOptions): Promise<any> {
+    return this.model.find(conditions).sort(options.sort).cursor({ batchSize: options?.batchSize });
+  }
 }

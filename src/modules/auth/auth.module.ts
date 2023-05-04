@@ -9,7 +9,7 @@ import { AuthController } from '../../modules/auth/auth.controller';
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisConfig } from '../../configs/redis.config';
 import { UsersService } from '../users/users.service';
-// import { MailModule } from '../../modules/mail/mail.module';
+import { EmailModule } from '../email/emails.module';
 
 @Module({
   imports: [
@@ -23,7 +23,7 @@ import { UsersService } from '../users/users.service';
       ...redisConfig,
       isGlobal: true,
     }),
-    // MailModule,
+    EmailModule,
   ],
   providers: [AuthService, JwtStrategy, UsersService],
   exports: [AuthService],

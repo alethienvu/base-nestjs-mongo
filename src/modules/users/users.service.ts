@@ -1,4 +1,10 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+  forwardRef,
+} from '@nestjs/common';
 import { UsersRepository } from './users.repository';
 import { IUser } from './users.interface';
 import { handleApiClientError } from '../../errors/errors';
@@ -7,10 +13,15 @@ import * as crypto from 'crypto';
 import { v4 as uuidV4 } from 'uuid';
 import { UserRole, UserStatus } from '../../shared/enum/users.const';
 import { UpdatePassWordDto, UpdateUserDto } from './dtos/updateUser.dto';
+import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly userRepository: UsersRepository) {}
+  constructor(
+    private readonly userRepository: UsersRepository,
+    @Inject(forwardRef(() => EmailService))
+    private readonly mailService: EmailService,
+  ) {}
 
   /**
    *
@@ -75,6 +86,11 @@ export class UsersService {
         .catch((error) => {
           handleApiClientError(error);
         });
+    });
+    this.mailService.sendSignupMail({
+      email: createUserDto.email,
+      subject: 'Sign up to LiMall successfully!',
+      content: 'You signed up to LiMall',
     });
     return newUser;
   }
