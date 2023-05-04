@@ -1,4 +1,3 @@
-
 import { getBaseSchema } from 'src/shared/mongo.helper';
 import { IEmail } from './emails.interface';
 
