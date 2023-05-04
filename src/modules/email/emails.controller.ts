@@ -14,8 +14,7 @@ export class EmailController {
   @Post('')
   @ApiOperation({
     operationId: 'signup-emails',
-    description: 'Signup emails',
-    summary: 'Signup emails',
+    description: 'Signup emails',summary: 'Signup emails',
   })
   @ApiResponse({
     status: HttpStatus.OK,
