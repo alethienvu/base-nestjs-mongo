@@ -13,15 +13,29 @@ export class EmailController {
 
   @Post('')
   @ApiOperation({
-    operationId: 'signup-emails',
-    description: 'Signup emails',
-    summary: 'Signup emails',
+    operationId: 'send-signup-emails',
+    description: 'Send signup emails',
+    summary: 'Send signup emails',
   })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Successful',
   })
-  createEmail(@Body() emailDto: EmailDto): Promise<SentMessageInfo> {
-    return this.emailService.sendMail(emailDto);
+  sendSignupMail(@Body() emailDto: EmailDto): Promise<SentMessageInfo> {
+    return this.emailService.sendSignupMail(emailDto);
+  }
+
+  @Post('all')
+  @ApiOperation({
+    operationId: 'send-all-signup-emails',
+    description: 'Trigger send signup email to all users',
+    summary: 'Trigger send signup email to all users',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Successful',
+  })
+  sendSignupMailAll() {
+    return this.emailService.sendAllEmail();
   }
 }

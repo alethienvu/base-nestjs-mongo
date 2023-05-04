@@ -1,18 +1,27 @@
 import { MailerService } from '@nestjs-modules/mailer';
-// import { InjectQueue } from '@nestjs/bull';
-import { Injectable, Logger } from '@nestjs/common';
-// import { Queue } from 'bull';
+import { InjectQueue } from '@nestjs/bull';
+import { Inject, Injectable, Logger, forwardRef } from '@nestjs/common';
+import { Queue } from 'bull';
 import { mailConfig } from '../../configs/mail.config';
 import { EmailDto } from './dto/test-mail.dto';
+import * as config from 'config';
 import { SentMessageInfo } from 'nodemailer';
+import { UsersRepository } from '../users/users.repository';
+import { db2api } from 'src/shared/data.prettifier';
+import { IUser } from '../users/users.interface';
+import { EmailQueueName } from './emails.enum';
+
+const sendEmailQueue: string = config.get('redis.sendEmailQueue');
 @Injectable()
 export class EmailService {
   constructor(
-    // @InjectQueue('mail') private readonly emailQueue: Queue,
+    @Inject(forwardRef(() => UsersRepository))
+    private readonly usersRepository: UsersRepository,
+    @InjectQueue(sendEmailQueue) private readonly emailQueue: Queue,
     private mailerService: MailerService,
   ) {}
 
-  async sendMail(testMailDto: EmailDto): Promise<SentMessageInfo> {
+  async sendSignupMail(testMailDto: EmailDto): Promise<SentMessageInfo> {
     await this.mailerService
       .sendMail({
         from: mailConfig.from,
@@ -31,5 +40,21 @@ export class EmailService {
       .catch((e) => {
         Logger.error(e);
       });
+  }
+
+  async sendAllEmail() {
+    const cursor = await this.usersRepository.findWithCursor(
+      { email: { $ne: null } },
+      { batchSize: 100000 },
+    );
+    for await (const doc of cursor) {
+      const user: IUser = db2api(doc);
+      const { email, id } = user;
+      await this.emailQueue.add(EmailQueueName.SENDALL, {
+        userId: id,
+        email,
+        content: 'Welcome to our application!!!',
+      });
+    }
   }
 }
