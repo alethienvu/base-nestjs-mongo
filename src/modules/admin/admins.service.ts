@@ -5,18 +5,18 @@ import {
   NotFoundException,
   forwardRef,
 } from '@nestjs/common';
-import { UsersRepository } from './users.repository';
-import { IUser } from './users.interface';
 import { handleApiClientError } from '../../errors/errors';
-import { CreateUserDto } from './dtos/createUser.dto';
 import * as crypto from 'crypto';
 import { v4 as uuidV4 } from 'uuid';
-import { UserRole, UserStatus } from '../../shared/enum/users.const';
-import { UpdatePassWordDto, UpdateUserDto } from './dtos/updateUser.dto';
+import { UserStatus } from '../../shared/enum/users.const';
 import { EmailService } from '../email/email.service';
+import { UsersRepository } from '../users/users.repository';
+import { IUser } from '../users/users.interface';
+import { CreateAdminDto, LockUserDto } from './types/createAdmin.dto';
+import { db2api } from 'src/shared/data.prettifier';
 
 @Injectable()
-export class UsersService {
+export class AdminService {
   constructor(
     private readonly userRepository: UsersRepository,
     @Inject(forwardRef(() => EmailService))
@@ -28,21 +28,11 @@ export class UsersService {
     return !user ? false : true;
   }
 
-  /**
-   *
-   * @param email
-   * @returns user without password
-   */
   async findUserByEmailAddress(email: string): Promise<IUser> {
     const user = this.userRepository.findOne({ email });
     return user;
   }
 
-  /**
-   *
-   * @param id
-   * @returns user without password
-   */
   async findUserById(id: string): Promise<IUser> {
     const user = await this.userRepository.findOne({ id });
     if (!user) {
@@ -51,11 +41,6 @@ export class UsersService {
     return user;
   }
 
-  /**
-   *
-   * @param id
-   * @returns user document with password
-   */
   async findUserWithPasswordById(id: string): Promise<IUser> {
     const user = await this.userRepository.findOneWithPass({ id });
     if (!user) {
@@ -64,8 +49,8 @@ export class UsersService {
     return user;
   }
 
-  async createUser(createUserDto: CreateUserDto) {
-    const { email, password } = createUserDto;
+  async createAdmin(createAdminDto: CreateAdminDto): Promise<IUser> {
+    const { email, password, role } = createAdminDto;
     const sameEmailAddress = await this.checkUserEmailAddressExisted(email);
     if (!!sameEmailAddress) {
       throw new BadRequestException(`Email is already taken`);
@@ -78,7 +63,7 @@ export class UsersService {
             id: uuidV4(),
             email,
             password: hashPass,
-            role: UserRole.USER,
+            role,
             status: UserStatus.ACTIVE,
           },
           { session },
@@ -88,38 +73,33 @@ export class UsersService {
         });
     });
     this.mailService.sendSignupMail({
-      email: createUserDto.email,
+      email: createAdminDto.email,
       subject: 'Sign up to LiMall successfully!',
       content: 'You signed up to LiMall',
     });
-    return newUser;
+    return db2api(newUser);
   }
 
-  async updateUser(id: string, updateUser: UpdateUserDto) {
+  async deleteUser(id: string): Promise<any> {
     const currentUser = await this.findUserById(id);
-    if (updateUser.address) {
-      currentUser.address = updateUser.address;
-    }
-    if (updateUser.first_name) {
-      currentUser.first_name = updateUser.first_name;
-    }
-    if (updateUser.last_name) {
-      currentUser.last_name = updateUser.last_name;
-    }
-    const updatedUser = await this.userRepository.save(currentUser);
-
-    return updatedUser;
+    const removedUser = await this.userRepository.deleteOne(id);
+    this.mailService.sendSignupMail({
+      email: currentUser.email,
+      subject: 'Your account has been deleted',
+      content: 'Your account has been deleted!',
+    });
+    return removedUser;
   }
 
-  async changePassWord(id: string, updatePassWordDto: UpdatePassWordDto) {
-    const currentUser = await this.findUserWithPasswordById(id);
-    const { currently_pass, new_pass } = updatePassWordDto;
-    const compare_pass = crypto.createHmac('sha256', currently_pass).digest('hex');
-    if (currentUser.password !== compare_pass) {
-      throw new BadRequestException(`Wrong pass`);
-    }
-    currentUser.password = crypto.createHmac('sha256', new_pass).digest('hex');
+  async lockOrDeActiveUser(id: string, lockUserDto: LockUserDto): Promise<IUser> {
+    const currentUser = await this.findUserById(id);
+    currentUser.status = lockUserDto.status;
     const updatedUser = await this.userRepository.save(currentUser);
-    return updatedUser;
+    this.mailService.sendSignupMail({
+      email: currentUser.email,
+      subject: 'Your account has been updated',
+      content: `Your account status updated to ${lockUserDto.status}`,
+    });
+    return db2api(updatedUser);
   }
 }
