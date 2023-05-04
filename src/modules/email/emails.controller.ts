@@ -6,7 +6,7 @@ import { ACCESS_TOKEN_HEADER_NAME } from 'src/shared/constants';
 import { SentMessageInfo } from 'nodemailer';
 
 @Controller('emails')
-@ApiTags('emails')
+@ApiTags('Emails')
 @ApiBearerAuth(ACCESS_TOKEN_HEADER_NAME)
 export class EmailController {
   constructor(private readonly emailService: EmailService) {}

@@ -90,4 +90,8 @@ export class UsersRepository implements OnApplicationBootstrap {
   async findWithCursor(conditions, options?: QueryOptions): Promise<any> {
     return this.model.find(conditions).sort(options.sort).cursor({ batchSize: options?.batchSize });
   }
+
+  async deleteOne(id: string) {
+    return this.model.deleteOne({ id }).exec();
+  }
 }

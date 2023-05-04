@@ -9,12 +9,14 @@ import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { EmailModule } from './modules/email/emails.module';
+import { AdminsModule } from './modules/admin/admins.module';
 
 @Module({
   imports: [
     ConfigModule,
     AuthModule,
     UsersModule,
+    AdminsModule,
     LoggerModule.forRootAsync({
       useFactory: async () => {
         return {
