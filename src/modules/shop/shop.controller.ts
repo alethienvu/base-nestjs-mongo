@@ -24,6 +24,7 @@ export class ShopController {
   })
   @UseInterceptors(PaginationInterceptor)
   @CommonQueryRequest()
+  @UseGuards(JwtAuthGuard)
   indexFuelSubsidyTransaction(
     @Pagination() pagination: IPagination,
     @Query() filters: IndexShopInput,
