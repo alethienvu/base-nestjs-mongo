@@ -1,4 +1,4 @@
-import { UserRole, UserStatus } from '../../shared/enum/users.const';
+import { Gender, UserRole, UserStatus } from '../../shared/enum/users.const';
 import { BaseDocument } from '../../shared/mongo.helper';
 
 export interface IUserBase {
@@ -7,6 +7,9 @@ export interface IUserBase {
   address?: string;
   first_name?: string;
   last_name?: string;
+  phone: string;
+  gender: Gender,
+  dateOfBirth: Date;
   role: UserRole;
   status: UserStatus;
   createdAt?: Date;

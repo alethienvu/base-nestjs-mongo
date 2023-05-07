@@ -3,11 +3,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ObjectId } from 'mongodb';
 import { ClientSession, Model, QueryOptions, SaveOptions } from 'mongoose';
 import { DbModel } from '../../shared/constants';
-import { IUser } from './users.interface';
+import { IShop } from './shop.interface';
 
 @Injectable()
-export class UsersRepository implements OnApplicationBootstrap {
-  constructor(@InjectModel(DbModel.Users) private readonly model: Model<IUser>) {}
+export class ShopRepository implements OnApplicationBootstrap {
+  constructor(@InjectModel(DbModel.Shop) private readonly model: Model<IShop>) {}
 
   async onApplicationBootstrap(): Promise<void> {
     await this.createCollection();
@@ -27,7 +27,7 @@ export class UsersRepository implements OnApplicationBootstrap {
     return !!result;
   }
 
-  async findAll(findParams, option?: QueryOptions, sort?: any): Promise<IUser[]> {
+  async findAll(findParams, option?: QueryOptions, sort?: any): Promise<IShop[]> {
     const query = this.model.find(findParams, {}, option);
 
     if (sort && Object.keys(sort).length > 0) {
@@ -51,6 +51,10 @@ export class UsersRepository implements OnApplicationBootstrap {
     return new this.model(docs).save(options);
   }
 
+  async create(docs: object, options?: SaveOptions) {
+    return new this.model(docs).save(options);
+  }
+
   async findById(id: string) {
     return this.model.findById(id).exec();
   }
@@ -59,11 +63,7 @@ export class UsersRepository implements OnApplicationBootstrap {
     return this.model.findOne(findParams).exec();
   }
 
-  async findOneWithPass(findParams) {
-    return this.model.findOne(findParams).select('+password').exec();
-  }
-
-  async updateOne(conditions, doc: any, options?: QueryOptions): Promise<IUser> {
+  async updateOne(conditions, doc: any, options?: QueryOptions): Promise<IShop> {
     return this.model.findOneAndUpdate(conditions, doc, options);
   }
 

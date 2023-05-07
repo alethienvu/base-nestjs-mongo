@@ -146,3 +146,14 @@ export function convertObject(obj: any, options: ConvertObjectOptions = {}): any
   }
   return resultObj;
 }
+
+/**
+ * 
+ * @param objToUpdate Object need to update
+ * @param updatedProps Object contain update field
+ */
+export function updateObject(objToUpdate, updatedProps) {
+  for (const prop in updatedProps) {
+    objToUpdate[prop] = updatedProps[prop];
+  }
+}

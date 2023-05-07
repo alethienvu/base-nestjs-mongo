@@ -14,6 +14,7 @@ import { v4 as uuidV4 } from 'uuid';
 import { UserRole, UserStatus } from '../../shared/enum/users.const';
 import { UpdatePassWordDto, UpdateUserDto } from './dtos/updateUser.dto';
 import { EmailService } from '../email/email.service';
+import { updateObject } from 'src/shared/helpers';
 
 @Injectable()
 export class UsersService {
@@ -97,15 +98,7 @@ export class UsersService {
 
   async updateUser(id: string, updateUser: UpdateUserDto) {
     const currentUser = await this.findUserById(id);
-    if (updateUser.address) {
-      currentUser.address = updateUser.address;
-    }
-    if (updateUser.first_name) {
-      currentUser.first_name = updateUser.first_name;
-    }
-    if (updateUser.last_name) {
-      currentUser.last_name = updateUser.last_name;
-    }
+    updateObject(currentUser, updateUser);
     const updatedUser = await this.userRepository.save(currentUser);
 
     return updatedUser;
