@@ -10,13 +10,12 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { EmailModule } from './modules/email/emails.module';
 import { AdminsModule } from './modules/admin/admins.module';
+import { TasksModule } from './modules/cronjob/tasks/tasks.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
     ConfigModule,
-    AuthModule,
-    UsersModule,
-    AdminsModule,
     LoggerModule.forRootAsync({
       useFactory: async () => {
         return {
@@ -36,7 +35,12 @@ import { AdminsModule } from './modules/admin/admins.module';
     MongooseModule.forRootAsync({
       useFactory: () => createMongooseOptions('mongodb.uri'),
     }),
+    AuthModule,
+    UsersModule,
+    AdminsModule,
     EmailModule,
+    ScheduleModule.forRoot(),
+    TasksModule,
   ],
   providers: [
     {

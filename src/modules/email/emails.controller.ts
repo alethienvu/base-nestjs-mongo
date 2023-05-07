@@ -1,9 +1,10 @@
-import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { EmailService } from './email.service';
 import { EmailDto } from './dto/test-mail.dto';
 import { ACCESS_TOKEN_HEADER_NAME } from 'src/shared/constants';
 import { SentMessageInfo } from 'nodemailer';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('emails')
 @ApiTags('Emails')
@@ -21,6 +22,7 @@ export class EmailController {
     status: HttpStatus.OK,
     description: 'Successful',
   })
+  @UseGuards(JwtAuthGuard)
   sendSignupMail(@Body() emailDto: EmailDto): Promise<SentMessageInfo> {
     return this.emailService.sendSignupMail(emailDto);
   }
@@ -35,6 +37,7 @@ export class EmailController {
     status: HttpStatus.OK,
     description: 'Successful',
   })
+  @UseGuards(JwtAuthGuard)
   sendSignupMailAll() {
     return this.emailService.sendAllEmail();
   }

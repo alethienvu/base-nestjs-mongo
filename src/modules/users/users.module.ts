@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { UsersController } from '../../modules/users/users.controller';
 import { UsersService } from '../../modules/users/users.service';
 import { JwtModule } from '@nestjs/jwt';
@@ -16,7 +16,7 @@ import { EmailModule } from '../email/emails.module';
       secret: jwtConstants.accessTokenSecret,
       signOptions: { expiresIn: jwtConstants.accessTokenExpiry },
     }),
-    EmailModule,
+    forwardRef(() => EmailModule),
   ],
   providers: [UsersService, UsersRepository],
   exports: [UsersService, UsersRepository],
