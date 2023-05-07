@@ -1,10 +1,10 @@
 {
   "name": "base-nestjs-mongo",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "Base repository nestjs with mongodb",
   "author": "VuThanhThien",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -18,7 +18,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "cron:send-email": "nest build && node dist/modules/cronjob/isolate-cronjob/email-cronjob/send-email-cron.exec.js"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^1.8.1",
@@ -30,6 +31,7 @@
     "@nestjs/mongoose": "^9.2.2",
     "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^9.4.0",
+    "@nestjs/schedule": "^2.2.1",
     "@nestjs/swagger": "^6.3.0",
     "api-spec-converter": "^2.12.0",
     "bignumber.js": "^9.1.1",
@@ -72,6 +74,7 @@
     "@nestjs/testing": "^9.0.0",
     "@types/bull": "^4.10.0",
     "@types/config": "^3.3.0",
+    "@types/cron": "^2.0.1",
     "@types/express": "^4.17.13",
     "@types/jest": "29.5.0",
     "@types/node": "18.15.11",
