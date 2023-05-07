@@ -12,6 +12,7 @@ import { EmailModule } from './modules/email/emails.module';
 import { AdminsModule } from './modules/admin/admins.module';
 import { TasksModule } from './modules/cronjob/tasks/tasks.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { ShopModule } from './modules/shop/shop.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     EmailModule,
     ScheduleModule.forRoot(),
     TasksModule,
+    ShopModule,
   ],
   providers: [
     {

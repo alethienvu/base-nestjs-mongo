@@ -16,4 +16,5 @@ export const enum AUTH_HEADERS {
 export enum DbModel {
   Users = 'Users',
   Emails = 'Emails',
+  Shop = 'Shop',
 }

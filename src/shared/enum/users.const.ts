@@ -8,3 +8,9 @@ export enum UserStatus {
   DEACTIVE = 'DEACTIVE',
   LOCKED = 'LOCKED',
 }
+
+export enum Gender {
+  Male = 'Male',
+  Female = 'Female',
+  Other = 'Other',
+}
