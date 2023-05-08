@@ -20,7 +20,7 @@ export const SendEmailQueue = BullModule.registerQueue({
           { maxRetriesPerRequest: null, enableReadyCheck: false },
         );
       },
-      prefix: '{SendEmailQueue}',
+      prefix: 'REDIS_QUEUE_',
       defaultJobOptions: {
         attempts: 3,
       },
