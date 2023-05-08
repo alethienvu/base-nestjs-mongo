@@ -7,7 +7,7 @@ import { AUTH_CACHE_PREFIX, jwtConstants } from '../../modules/auth/auth.constan
 import { LoginDto } from '../../modules/auth/dto/login.dto';
 import { RefreshAccessTokenDto } from '../../modules/auth/dto/refresh-access-token.dto';
 import { ResponseLogin } from '../../modules/auth/dto/response-login.dto';
-import { JwtPayload } from '../../modules/auth/strategies/jwt.payload';
+import { IJwtPayload } from '../../modules/auth/strategies/jwt.payload';
 import { UsersService } from '../../modules/users/users.service';
 import { v4 as uuidv4 } from 'uuid';
 import * as crypto from 'crypto';
@@ -71,7 +71,7 @@ export class AuthService {
     } else throw new UnauthorizedException();
   }
 
-  generateAccessToken(payload: JwtPayload): { accessToken: string } {
+  generateAccessToken(payload: IJwtPayload): { accessToken: string } {
     return {
       accessToken: this.jwtService.sign(payload),
     };
@@ -94,7 +94,7 @@ export class AuthService {
     return this.jwtService.verifyAsync(accessToken);
   }
 
-  async decodeAccessToken(accessToken: string): Promise<JwtPayload | any> {
+  async decodeAccessToken(accessToken: string): Promise<IJwtPayload | any> {
     return this.jwtService.decode(accessToken);
   }
 }

@@ -9,6 +9,8 @@ swagger.json
 swagger-2.0.json
 package-lock.json
 yarn.lock
+dump.rdb
+
 # Logs
 logs
 *.log
@@ -33,6 +35,8 @@ lerna-debug.log*
 *.launch
 .settings/
 *.sublime-workspace
+/.awcache
+/.history
 
 # IDE - VSCode
 .vscode/*
