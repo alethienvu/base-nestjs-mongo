@@ -4,6 +4,7 @@ import { ACCESS_TOKEN_HEADER_NAME } from 'src/shared/constants';
 import { TasksService } from './tasks.service';
 import { AdminAndSuperAdmin } from 'src/modules/auth/guards/roles.guard';
 import { TaskName } from './tasks.enum';
+import { CommonErrorResponses } from 'src/shared/common-swagger';
 
 @Controller('schedules')
 @ApiTags('Schedules')
@@ -21,6 +22,7 @@ export class ScheduleController {
     status: HttpStatus.OK,
     description: 'Successful',
   })
+  @CommonErrorResponses()
   @UseGuards(AdminAndSuperAdmin)
   getCrons() {
     return this.tasksService.getCrons();
@@ -36,6 +38,7 @@ export class ScheduleController {
     status: HttpStatus.OK,
     description: 'Successful',
   })
+  @CommonErrorResponses()
   @UseGuards(AdminAndSuperAdmin)
   terminateJob(@Param('task') task: TaskName) {
     return this.tasksService.stopJob(task);
@@ -48,9 +51,10 @@ export class ScheduleController {
     summary: 'Restart running crons',
   })
   @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'Successful',
+    status: HttpStatus.CREATED,
+    description: 'Created',
   })
+  @CommonErrorResponses()
   @UseGuards(AdminAndSuperAdmin)
   restartJob(@Param('task') task: TaskName) {
     return this.tasksService.restartJob(task);
