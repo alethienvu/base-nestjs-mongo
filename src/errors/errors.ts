@@ -1,4 +1,3 @@
-// tslint:disable: max-line-length
 import {
   HttpException,
   HttpStatus,
@@ -143,12 +142,12 @@ export function flattenValidationErrors(validationErrors: ValidationError[]): st
 }
 
 function mapChildrenToValidationErrors(error: ValidationError): ValidationError[] {
-  if (!(error.children && error.children.length)) {
+  if (!error.children?.length) {
     return [error];
   }
   const validationErrors = [];
   for (const item of error.children) {
-    if (item.children && item.children.length) {
+    if (item.children?.length) {
       validationErrors.push(...mapChildrenToValidationErrors(item));
     }
     validationErrors.push(prependConstraintsWithParentProp(error, item));
@@ -162,7 +161,7 @@ function prependConstraintsWithParentProp(
 ): ValidationError {
   const constraints = {};
   for (const key in error.constraints) {
-    if (error.constraints.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(error.constraints, key)) {
       constraints[key] = `${parentError.property}.${error.constraints[key]}`;
     }
   }

@@ -5,7 +5,7 @@ import { ACCESS_TOKEN_HEADER_NAME } from '../../shared/constants';
 import { ShopService } from './shop.service';
 import { CreateShopDto, IndexShopInput } from './shop.dto';
 import { IPagination, IPaginationHeader } from 'src/adapters/pagination/pagination.interface';
-import { PaginationInterceptor } from 'src/filters/pagination.filter';
+import { PaginationInterceptor } from 'src/interceptor/pagination.interceptor';
 import { CommonQueryRequest } from 'src/shared/common-swagger';
 import { Pagination } from 'src/shared/decorators/pagination.decorator';
 import { IShop } from './shop.interface';
