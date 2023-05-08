@@ -8,7 +8,7 @@ export interface IUserBase {
   first_name?: string;
   last_name?: string;
   phone: string;
-  gender: Gender,
+  gender: Gender;
   dateOfBirth: Date;
   role: UserRole;
   status: UserStatus;

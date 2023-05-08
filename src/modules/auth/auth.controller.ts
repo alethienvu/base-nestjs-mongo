@@ -5,7 +5,6 @@ import { LoginDto } from '../../modules/auth/dto/login.dto';
 import { RefreshAccessTokenDto } from '../../modules/auth/dto/refresh-access-token.dto';
 import { ResponseLogin } from '../../modules/auth/dto/response-login.dto';
 import { JwtAuthGuard } from '../../modules/auth/guards/jwt-auth.guard';
-// import { MailService } from '../../modules/mail/mail.service';
 import { UsersService } from '../../modules/users/users.service';
 import { IUser } from '../users/users.interface';
 import { UserID } from '../../shared/decorators/get-user-id.decorator';
@@ -17,7 +16,7 @@ import { ACCESS_TOKEN_HEADER_NAME } from '../../shared/constants';
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private readonly userService: UsersService, // private readonly mailService: MailService,
+    private readonly userService: UsersService,
   ) {}
 
   @Get('/current')

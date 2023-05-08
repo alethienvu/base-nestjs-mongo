@@ -3,6 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ClientSession, Model, QueryOptions, SaveOptions } from 'mongoose';
 import { DbModel } from '../../shared/constants';
 import { IEmail } from './emails.interface';
+import { ObjectId } from 'mongodb';
+import { buildFindParamsObject } from 'src/shared/data.prettifier';
 
 export interface CursorOptions {
   batchSize?: number;
@@ -31,7 +33,8 @@ export class EmailRepository implements OnApplicationBootstrap {
   }
 
   async findAll(findParams, option?: QueryOptions, sort?: any): Promise<IEmail[]> {
-    const query = this.model.find(findParams, {}, option);
+    const param = buildFindParamsObject(findParams);
+    const query = this.model.find(param, {}, option);
 
     if (sort && Object.keys(sort).length > 0) {
       query.sort(sort);
@@ -55,7 +58,7 @@ export class EmailRepository implements OnApplicationBootstrap {
   }
 
   async findById(id: string) {
-    return this.model.findById(id).exec();
+    return this.model.findById({ _id: new ObjectId(id) }).exec();
   }
 
   async updateById(id: string, doc: any): Promise<IEmail> {
@@ -78,5 +81,9 @@ export class EmailRepository implements OnApplicationBootstrap {
     } finally {
       session.endSession();
     }
+  }
+
+  async deleteOne(id: string) {
+    return this.model.deleteOne({ _id: new ObjectId(id) }).exec();
   }
 }
