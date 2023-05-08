@@ -79,6 +79,7 @@ export function getHttpException(err: IGeneralErrorShape): HttpException {
       return new InternalServerErrorException(err);
   }
 }
+
 export function determineErrorResponseAndStatus(exception: any): {
   response: any;
   statusCode: HttpStatus;
@@ -130,6 +131,7 @@ export function determineErrorResponseAndStatus(exception: any): {
 
   return { response, statusCode };
 }
+
 export function flattenValidationErrors(validationErrors: ValidationError[]): string[] {
   return iterate(validationErrors)
     .map(mapChildrenToValidationErrors)
@@ -139,6 +141,7 @@ export function flattenValidationErrors(validationErrors: ValidationError[]): st
     .flatten()
     .toArray();
 }
+
 function mapChildrenToValidationErrors(error: ValidationError): ValidationError[] {
   if (!(error.children && error.children.length)) {
     return [error];
@@ -152,6 +155,7 @@ function mapChildrenToValidationErrors(error: ValidationError): ValidationError[
   }
   return validationErrors;
 }
+
 function prependConstraintsWithParentProp(
   parentError: ValidationError,
   error: ValidationError,

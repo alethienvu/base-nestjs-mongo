@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from './modules/config/config.module';
 import { LoggerModule } from 'nestjs-pino';
 import * as pino from 'pino';
@@ -13,6 +13,7 @@ import { AdminsModule } from './modules/admin/admins.module';
 import { TasksModule } from './modules/cronjob/tasks/tasks.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ShopModule } from './modules/shop/shop.module';
+import { UserMiddleware } from './middleware/user.middleware';
 
 @Module({
   imports: [
@@ -51,4 +52,8 @@ import { ShopModule } from './modules/shop/shop.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(UserMiddleware).forRoutes({ path: '*', method: RequestMethod.ALL });
+  }
+}

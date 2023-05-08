@@ -14,6 +14,7 @@ import * as responseTime from 'response-time';
 import { LoggerInterceptor } from './interceptor/logger.interceptor';
 import { v4 as uuidV4 } from 'uuid';
 import { initializeSwagger } from './shared/swagger.helper';
+import { CORS_EXPOSED_HEADERS } from './adapters/pagination/pagination.helper';
 
 const config = getConfig();
 async function bootstrap() {
@@ -23,8 +24,11 @@ async function bootstrap() {
   const logger = app.get(Logger);
 
   app.useLogger(logger);
+
   initializeApp(app);
+
   await initializeSwagger(app);
+
   const lightship = await initializeLightship(app);
 
   await app.listen(config.get<number>('server.port'));
@@ -37,6 +41,9 @@ function initializeApp(app: INestApplication) {
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
   app.use(responseTime({ header: 'x-response-time' }));
+  app.enableCors({
+    exposedHeaders: CORS_EXPOSED_HEADERS,
+  });
   app.use((req: express.Request, res: express.Response, next: () => void) => {
     const correlationId = uuidV4();
     httpContext.set('timestamp', Date.now());

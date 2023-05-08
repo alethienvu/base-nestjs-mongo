@@ -1,0 +1,37 @@
+service:
+  name: npm_package_name
+  description: Base nestjs mongo
+  node_env: NODE_ENV
+  baseUrl: /api/v1
+  docsBaseUrl: /docs/api/v1
+  jwt_access_token_secret: JWT_ACCESS_TOKEN_SECRET
+  jwt_access_token_expiration_time: JWT_ACCESS_TOKEN_EXPIRATION_TIME
+  jwt_refresh_token_secret: JWT_REFRESH_TOKEN_SECRET
+  jwt_refresh_token_expiration_time: JWT_REFRESH_TOKEN_EXPIRATION_TIME
+  api_version: npm_package_version
+  app_version: npm_package_version
+
+server:
+  host: localhost
+  port: 3000
+  hostname: localhost:3000
+  swaggerSchema: http
+
+mongodb:
+  uri: mongodb+srv://thudantd:3au3ks08vV5B0cil@alecluster.7way4av.mongodb.net/test
+
+redis:
+  standalone:
+    host: 127.0.0.1
+    port: 6379
+  sendEmailQueue: 'sendEmailQueue'
+
+mail:
+  account: MAIL_ACCOUNT
+  password: MAIL_PASSWORD
+  from: MAIL_FROM
+  service: MAIL_SERVICE
+  enable: MAIL_ENABLE
+
+logger:
+  enabled: true
