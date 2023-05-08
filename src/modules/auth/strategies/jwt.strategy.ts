@@ -22,11 +22,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new UnauthorizedException();
     }
-
     if (user.status == UserStatus.LOCKED) {
       throw new ForbiddenException(`User account is locked!`);
     }
-
     return user;
   }
 }

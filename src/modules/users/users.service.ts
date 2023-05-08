@@ -10,7 +10,6 @@ import { IUser } from './users.interface';
 import { handleApiClientError } from '../../errors/errors';
 import { CreateUserDto } from './dtos/createUser.dto';
 import * as crypto from 'crypto';
-import { v4 as uuidV4 } from 'uuid';
 import { UserRole, UserStatus } from '../../shared/enum/users.const';
 import { UpdatePassWordDto, UpdateUserDto } from './dtos/updateUser.dto';
 import { EmailService } from '../email/email.service';
@@ -45,7 +44,7 @@ export class UsersService {
    * @returns user without password
    */
   async findUserById(id: string): Promise<IUser> {
-    const user = await this.userRepository.findOne({ id });
+    const user = await this.userRepository.findById(id);
     if (!user) {
       throw new NotFoundException(`Not found user with id: ${id}`);
     }
@@ -58,7 +57,7 @@ export class UsersService {
    * @returns user document with password
    */
   async findUserWithPasswordById(id: string): Promise<IUser> {
-    const user = await this.userRepository.findOneWithPass({ id });
+    const user = await this.userRepository.findOneWithPass(id);
     if (!user) {
       throw new NotFoundException(`Not found user with id: ${id}`);
     }
@@ -76,7 +75,6 @@ export class UsersService {
       return this.userRepository
         .save(
           {
-            id: uuidV4(),
             email,
             password: hashPass,
             role: UserRole.USER,

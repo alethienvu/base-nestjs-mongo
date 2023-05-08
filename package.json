@@ -118,17 +118,17 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged && pwd && chmod 755 ./.husky/pre-commit.sh && ./.husky/pre-commit.sh"
+    }
+  },
   "lint-staged": {
     "*.{ts,tsx,json,scss,md,html}": [
       "eslint",
       "prettier --write",
       "git add"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "lint-staged && pwd && chmod 755 ./.husky/pre-commit.sh && ./.husky/pre-commit.sh"
-    }
   }
 }

@@ -148,7 +148,7 @@ export function convertObject(obj: any, options: ConvertObjectOptions = {}): any
 }
 
 /**
- * 
+ *
  * @param objToUpdate Object need to update
  * @param updatedProps Object contain update field
  */

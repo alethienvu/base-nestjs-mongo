@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ShopRepository } from './shop.repository';
 import { CreateShopDto, IndexShopInput } from './shop.dto';
-import { v4 as uuidV4 } from 'uuid';
 import { EmailService } from '../email/email.service';
 import { UsersService } from '../users/users.service';
 import { NotFoundError } from 'src/shared/common.errors';
@@ -30,7 +29,6 @@ export class ShopService {
       return this.shopRepository
         .save(
           {
-            id: uuidV4(),
             status: ShopStatus.ACTIVE,
             ...createShopDto,
           },

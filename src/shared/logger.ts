@@ -70,6 +70,11 @@ export function apiLog(req?: any, res?: any) {
   debugLog(data);
 }
 
+/**
+ *
+ * @param req http request
+ * @returns LOG object
+ */
 export function getHttpRequestLog(req) {
   if (!req) {
     return null;
@@ -78,13 +83,13 @@ export function getHttpRequestLog(req) {
   return {
     timestamp: new Date().toISOString(),
     id: req.id,
-    clientIP: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+    // clientIP: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
     method: req.method,
-    originalUri: req.originalUrl,
+    // originalUri: req.originalUrl,
     uri: req.url,
     referer: req.headers.referer || '',
-    userAgent: req.headers['user-agent'],
-    message: `HTTP Request - ${req.id}`,
+    // userAgent: req.headers['user-agent'],
+    // message: `HTTP Request - ${req.id}`,
     body: req.body,
     headers: req.headers,
   };

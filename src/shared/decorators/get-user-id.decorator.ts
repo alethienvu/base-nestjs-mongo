@@ -1,16 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createParamDecorator, ExecutionContext, UnauthorizedException } from '@nestjs/common';
-import jwtDecode from 'jwt-decode';
-import { IJwtPayload } from '../../modules/auth/strategies/jwt.payload';
-import { ACCESS_TOKEN_HEADER_NAME } from '../constants';
-/**
- * This decorator get userId from headers
- */
+import { getUserId } from 'src/middleware/user.middleware';
+
 export const UserID = createParamDecorator((data: string, ctx: ExecutionContext) => {
-  const request = ctx.switchToHttp().getRequest();
   try {
-    const token = request.get(ACCESS_TOKEN_HEADER_NAME);
-    const payload: IJwtPayload = jwtDecode(token);
-    return payload.userId;
+    const userId = getUserId();
+    return userId;
   } catch (e) {
     throw new UnauthorizedException();
   }

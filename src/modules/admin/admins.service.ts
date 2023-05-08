@@ -7,7 +7,6 @@ import {
 } from '@nestjs/common';
 import { handleApiClientError } from '../../errors/errors';
 import * as crypto from 'crypto';
-import { v4 as uuidV4 } from 'uuid';
 import { UserStatus } from '../../shared/enum/users.const';
 import { EmailService } from '../email/email.service';
 import { UsersRepository } from '../users/users.repository';
@@ -34,7 +33,7 @@ export class AdminService {
   }
 
   async findUserById(id: string): Promise<IUser> {
-    const user = await this.userRepository.findOne({ id });
+    const user = await this.userRepository.findById(id);
     if (!user) {
       throw new NotFoundException(`Not found user with id: ${id}`);
     }
@@ -42,7 +41,7 @@ export class AdminService {
   }
 
   async findUserWithPasswordById(id: string): Promise<IUser> {
-    const user = await this.userRepository.findOneWithPass({ id });
+    const user = await this.userRepository.findOneWithPass(id);
     if (!user) {
       throw new NotFoundException(`Not found user with id: ${id}`);
     }
@@ -60,7 +59,7 @@ export class AdminService {
       return this.userRepository
         .save(
           {
-            id: uuidV4(),
+            // id: uuidV4(),
             email,
             password: hashPass,
             role,

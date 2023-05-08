@@ -4,6 +4,7 @@ import { ObjectId } from 'mongodb';
 import { ClientSession, Model, QueryOptions, SaveOptions } from 'mongoose';
 import { DbModel } from '../../shared/constants';
 import { IUser } from './users.interface';
+import { buildFindParamsObject } from 'src/shared/data.prettifier';
 
 @Injectable()
 export class UsersRepository implements OnApplicationBootstrap {
@@ -28,7 +29,8 @@ export class UsersRepository implements OnApplicationBootstrap {
   }
 
   async findAll(findParams, option?: QueryOptions, sort?: any): Promise<IUser[]> {
-    const query = this.model.find(findParams, {}, option);
+    const param = buildFindParamsObject(findParams);
+    const query = this.model.find(param, {}, option);
 
     if (sort && Object.keys(sort).length > 0) {
       query.sort(sort);
@@ -52,15 +54,19 @@ export class UsersRepository implements OnApplicationBootstrap {
   }
 
   async findById(id: string) {
-    return this.model.findById(id).exec();
+    return this.model.findById({ _id: new ObjectId(id) }).exec();
   }
 
   async findOne(findParams) {
-    return this.model.findOne(findParams).exec();
+    const param = buildFindParamsObject(findParams);
+    return this.model.findOne(param).exec();
   }
 
-  async findOneWithPass(findParams) {
-    return this.model.findOne(findParams).select('+password').exec();
+  async findOneWithPass(id: string) {
+    return this.model
+      .findOne({ _id: new ObjectId(id) })
+      .select('+password')
+      .exec();
   }
 
   async updateOne(conditions, doc: any, options?: QueryOptions): Promise<IUser> {
@@ -88,6 +94,6 @@ export class UsersRepository implements OnApplicationBootstrap {
   }
 
   async deleteOne(id: string) {
-    return this.model.deleteOne({ id }).exec();
+    return this.model.deleteOne({ _id: new ObjectId(id) }).exec();
   }
 }
