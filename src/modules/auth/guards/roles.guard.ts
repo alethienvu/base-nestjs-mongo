@@ -1,16 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { CanActivate, ExecutionContext, ForbiddenException, Injectable } from '@nestjs/common';
-import { IJwtPayload } from '../strategies/jwt.payload';
-import jwtDecode from 'jwt-decode';
 import { UserRole } from '../../../shared/enum/users.const';
-import { ACCESS_TOKEN_HEADER_NAME } from 'src/shared/constants';
+import { getUserData } from 'src/middleware/user.middleware';
 
 @Injectable()
 export class OnlyAdmin implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest();
-    const token = request.get(ACCESS_TOKEN_HEADER_NAME);
-    const payload: IJwtPayload = jwtDecode(token);
-    const { role } = payload;
+    const user = getUserData();
+    const { role } = user;
     if (role === UserRole.ADMIN) return true;
     else throw new ForbiddenException();
   }
@@ -19,10 +16,8 @@ export class OnlyAdmin implements CanActivate {
 @Injectable()
 export class OnlySuperAdmin implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest();
-    const token = request.get(ACCESS_TOKEN_HEADER_NAME);
-    const payload: IJwtPayload = jwtDecode(token);
-    const { role } = payload;
+    const user = getUserData();
+    const { role } = user;
     if (role === UserRole.SUPER_ADMIN) return true;
     else throw new ForbiddenException();
   }
@@ -31,10 +26,8 @@ export class OnlySuperAdmin implements CanActivate {
 @Injectable()
 export class AdminAndSuperAdmin implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest();
-    const token = request.get(ACCESS_TOKEN_HEADER_NAME);
-    const payload: IJwtPayload = jwtDecode(token);
-    const { role } = payload;
+    const user = getUserData();
+    const { role } = user;
     if (role === UserRole.ADMIN || role === UserRole.SUPER_ADMIN) return true;
     else throw new ForbiddenException();
   }

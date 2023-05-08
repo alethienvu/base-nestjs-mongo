@@ -23,7 +23,6 @@ export class UserMiddleware implements NestMiddleware {
     if (!accessToken) {
       return null;
     }
-
     const user: IJwtPayload = decodeJWTToken(accessToken);
     return user;
   }
