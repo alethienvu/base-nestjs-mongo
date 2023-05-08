@@ -5,6 +5,7 @@ import { EmailDto } from './dto/test-mail.dto';
 import { ACCESS_TOKEN_HEADER_NAME } from 'src/shared/constants';
 import { SentMessageInfo } from 'nodemailer';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CommonErrorResponses } from 'src/shared/common-swagger';
 
 @Controller('emails')
 @ApiTags('Emails')
@@ -22,6 +23,7 @@ export class EmailController {
     status: HttpStatus.OK,
     description: 'Successful',
   })
+  @CommonErrorResponses()
   @UseGuards(JwtAuthGuard)
   sendSignupMail(@Body() emailDto: EmailDto): Promise<SentMessageInfo> {
     return this.emailService.sendSignupMail(emailDto);
@@ -33,6 +35,7 @@ export class EmailController {
     description: 'Trigger send signup email to all users',
     summary: 'Trigger send signup email to all users',
   })
+  @CommonErrorResponses()
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Successful',

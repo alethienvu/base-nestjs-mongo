@@ -9,6 +9,7 @@ import { UsersService } from '../../modules/users/users.service';
 import { IUser } from '../users/users.interface';
 import { UserID } from '../../shared/decorators/get-user-id.decorator';
 import { ACCESS_TOKEN_HEADER_NAME } from '../../shared/constants';
+import { CommonErrorResponses } from 'src/shared/common-swagger';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -29,6 +30,7 @@ export class AuthController {
     status: HttpStatus.OK,
     description: 'Successful',
   })
+  @CommonErrorResponses()
   @UseGuards(JwtAuthGuard)
   async currentUser(@UserID() userId: string): Promise<IUser> {
     const user = await this.userService.findUserById(userId);
@@ -41,6 +43,11 @@ export class AuthController {
     description: 'Login',
     summary: 'Login',
   })
+  @CommonErrorResponses()
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Successful',
+  })
   async login(@Body() loginDto: LoginDto): Promise<ResponseLogin> {
     return await this.authService.login(loginDto);
   }
@@ -50,6 +57,11 @@ export class AuthController {
     operationId: 'refresh-access-token',
     description: 'Refresh access-token',
     summary: 'Refresh access-token',
+  })
+  @CommonErrorResponses()
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Created',
   })
   @ApiBody({
     type: RefreshAccessTokenDto,
