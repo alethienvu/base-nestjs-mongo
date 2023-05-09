@@ -2,6 +2,7 @@ import { BullModule } from '@nestjs/bull';
 import { Global, Module } from '@nestjs/common';
 import * as config from 'config';
 import Redis from 'ioredis';
+import { redisConfig } from '../../configs/redis.config';
 
 const redisQueueEmails: string = config.get('redis.sendEmailQueue');
 
@@ -14,11 +15,11 @@ export const SendEmailQueue = BullModule.registerQueue({
   imports: [
     BullModule.forRoot({
       createClient: () => {
-        return new Redis(
-          +config.get('redis.standalone.port'),
-          config.get('redis.standalone.host'),
-          { maxRetriesPerRequest: null, enableReadyCheck: false },
-        );
+        return new Redis(redisConfig.port, redisConfig.host, {
+          maxRetriesPerRequest: null,
+          enableReadyCheck: false,
+          password: redisConfig.pass,
+        });
       },
       prefix: 'REDIS_QUEUE_',
       defaultJobOptions: {

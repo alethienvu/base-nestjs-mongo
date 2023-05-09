@@ -34,26 +34,18 @@ export class SendEmailQueueJob {
 
   @OnQueueActive()
   onActive(job: Job) {
-    infoLog(
-      `🚀🚀🚀 ~ Processing job ${job.id} of type ${job.name} with data ${JSON.stringify(
-        job.data,
-      )}...`,
-    );
+    infoLog(`🚀🚀🚀 ~ Processing job ${job.name}:${job.id}...`);
   }
 
   @OnQueueCompleted()
   onCompleted(job: Job) {
     infoLog(
-      `🚀🚀🚀 ~ Completed job ${job.id} of type ${
-        job.name
-      } with result: Send email success to ${JSON.stringify(job.data.email.email)}`,
+      `🚀🚀🚀 ~ Completed job ${job.name}: ${job.id}. Send email success to ${job.data.email}`,
     );
   }
 
   @OnQueueFailed()
   onFailed(job: Job) {
-    errorLog(
-      `🚀🚀🚀 ~ Failed job ${job.id} of type ${job.name} with failed reason: ${job.failedReason}`,
-    );
+    errorLog(`🚀🚀🚀 ~ Failed job ${job.name}: ${job.id}. Failed reason: ${job.failedReason}`);
   }
 }
