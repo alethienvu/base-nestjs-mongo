@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { ACCESS_TOKEN_HEADER_NAME } from '../../shared/constants';
+import { AUTH_HEADERS } from '../../shared/constants';
 import { ShopService } from './shop.service';
 import { CreateShopDto, IndexShopInput } from './shop.dto';
 import { IPagination, IPaginationHeader } from 'src/adapters/pagination/pagination.interface';
@@ -20,7 +20,7 @@ import { Pagination } from 'src/shared/decorators/pagination.decorator';
 import { IShop } from './shop.interface';
 
 @Controller('shop')
-@ApiBearerAuth(ACCESS_TOKEN_HEADER_NAME)
+@ApiBearerAuth(AUTH_HEADERS.ACCESS_TOKEN)
 @ApiTags('Shop')
 export class ShopController {
   constructor(private shopService: ShopService) {}

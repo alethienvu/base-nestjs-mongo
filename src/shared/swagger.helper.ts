@@ -4,6 +4,7 @@ import { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule, OpenAPIObject } from '@nestjs/swagger';
 import { IConfig } from 'config';
 import { CONFIG } from '../modules/config/config.provider';
+import { AUTH_HEADERS } from './constants';
 
 export async function initializeSwagger(app: INestApplication) {
   const config = app.get<IConfig>(CONFIG);
@@ -14,12 +15,13 @@ export async function initializeSwagger(app: INestApplication) {
   const options = new DocumentBuilder()
     .setTitle(`${serviceName} API spec`)
     .setDescription(
-      `${serviceDescription} | [swagger.json](swagger.json) | [swagger-2.0.json](swagger-2.0.json)`,
+      `${serviceDescription}
+      | [swagger.json](${config.get('service.docsBaseUrl')}/swagger.json)
+      | [swagger-2.0.json](${config.get('service.docsBaseUrl')}/swagger-2.0.json)`,
     )
     .setVersion(apiVersion)
     .addServer(`${config.get('server.swaggerSchema')}://${config.get('server.hostname')}`)
-    .addBearerAuth()
-    .addApiKey(null, 'access-token')
+    .addApiKey(null, AUTH_HEADERS.ACCESS_TOKEN)
     .build();
 
   const [swagger2, oas3] = await generateSwaggerSpecs(app, options);

@@ -1,7 +1,13 @@
 import { ObjectId } from 'mongodb';
 import { Model } from 'mongoose';
 
-const convertObject = (dbObj: any, exclude?: Array<string>): object => {
+/**
+ *
+ * @param dbObj mongo object data
+ * @param exclude
+ * @returns readable object
+ */
+const convertMongooseObject = (dbObj: any, exclude?: Array<string>): object => {
   const apiObj = {};
 
   if (dbObj instanceof Model) {
@@ -30,6 +36,11 @@ const convertObject = (dbObj: any, exclude?: Array<string>): object => {
   return apiObj;
 };
 
+/**
+ *
+ * @param dbObj findparam object
+ * @returns mongoose find params
+ */
 export const buildFindParamsObject = (dbObj: any): object => {
   const apiObj = {};
   if (dbObj instanceof Model) {
@@ -75,10 +86,10 @@ export function db2api<T1, T2>(db: T1, exclude?: string[]): T2 {
   if (Array.isArray(db)) {
     response = [];
     for (const obj of db) {
-      response.push(convertObject(obj, exclude));
+      response.push(convertMongooseObject(obj, exclude));
     }
   } else {
-    response = convertObject(db, exclude);
+    response = convertMongooseObject(db, exclude);
   }
 
   return response;

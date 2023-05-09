@@ -14,7 +14,7 @@ import * as responseTime from 'response-time';
 import { LoggerInterceptor } from './interceptor/logger.interceptor';
 import { v4 as uuidV4 } from 'uuid';
 import { initializeSwagger } from './shared/swagger.helper';
-import { CORS_EXPOSED_HEADERS } from './adapters/pagination/pagination.helper';
+import { CORS_EXPOSED_HEADERS } from './shared/constants';
 
 const config = getConfig();
 async function bootstrap() {
@@ -83,5 +83,5 @@ bootstrap()
     );
   })
   .catch((error) => {
-    LoggerCommon.error('bootstrap starting error ', error);
+    LoggerCommon.error('Bootstrap starting error ', error);
   });

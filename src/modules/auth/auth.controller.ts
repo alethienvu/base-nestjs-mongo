@@ -8,12 +8,12 @@ import { JwtAuthGuard } from '../../modules/auth/guards/jwt-auth.guard';
 import { UsersService } from '../../modules/users/users.service';
 import { IUser } from '../users/users.interface';
 import { UserID } from '../../shared/decorators/get-user-id.decorator';
-import { ACCESS_TOKEN_HEADER_NAME } from '../../shared/constants';
+import { AUTH_HEADERS } from '../../shared/constants';
 import { CommonErrorResponses } from 'src/shared/common-swagger';
 
 @Controller('auth')
 @ApiTags('Auth')
-@ApiBearerAuth(ACCESS_TOKEN_HEADER_NAME)
+@ApiBearerAuth(AUTH_HEADERS.ACCESS_TOKEN)
 export class AuthController {
   constructor(
     private readonly authService: AuthService,

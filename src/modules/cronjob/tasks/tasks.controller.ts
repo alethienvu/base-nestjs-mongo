@@ -1,6 +1,6 @@
 import { Controller, Get, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ACCESS_TOKEN_HEADER_NAME } from 'src/shared/constants';
+import { AUTH_HEADERS } from 'src/shared/constants';
 import { TasksService } from './tasks.service';
 import { AdminAndSuperAdmin } from 'src/modules/auth/guards/roles.guard';
 import { TaskName } from './tasks.enum';
@@ -8,7 +8,7 @@ import { CommonErrorResponses } from 'src/shared/common-swagger';
 
 @Controller('schedules')
 @ApiTags('Schedules')
-@ApiBearerAuth(ACCESS_TOKEN_HEADER_NAME)
+@ApiBearerAuth(AUTH_HEADERS.ACCESS_TOKEN)
 export class ScheduleController {
   constructor(private readonly tasksService: TasksService) {}
 
