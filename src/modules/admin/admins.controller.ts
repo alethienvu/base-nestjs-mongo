@@ -4,11 +4,11 @@ import { AdminAndSuperAdmin, OnlySuperAdmin } from '../auth/guards/roles.guard';
 import { AdminService } from './admins.service';
 import { CreateAdminDto, LockUserDto } from './types/createAdmin.dto';
 import { IUser } from '../users/users.interface';
-import { ACCESS_TOKEN_HEADER_NAME } from 'src/shared/constants';
+import { AUTH_HEADERS } from 'src/shared/constants';
 import { CommonErrorResponses } from 'src/shared/common-swagger';
 
 @Controller('admin')
-@ApiBearerAuth(ACCESS_TOKEN_HEADER_NAME)
+@ApiBearerAuth(AUTH_HEADERS.ACCESS_TOKEN)
 @ApiTags('Admin')
 export class AdminController {
   constructor(private adminService: AdminService) {}

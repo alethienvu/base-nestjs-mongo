@@ -2,7 +2,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import * as httpContext from 'express-http-context';
 import { decodeJWTToken } from '../shared/helpers';
-import { ACCESS_TOKEN_HEADER_NAME } from 'src/shared/constants';
+import { AUTH_HEADERS } from 'src/shared/constants';
 import { IJwtPayload } from 'src/modules/auth/strategies/jwt.payload';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class UserMiddleware implements NestMiddleware {
   }
 
   async getUserSession(req): Promise<IJwtPayload | null> {
-    const accessToken = req.get(ACCESS_TOKEN_HEADER_NAME);
+    const accessToken = req.get(AUTH_HEADERS.ACCESS_TOKEN);
     if (!accessToken) {
       return null;
     }

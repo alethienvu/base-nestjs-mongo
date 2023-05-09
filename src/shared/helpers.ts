@@ -19,8 +19,6 @@ export function decodeJWTToken(token: string) {
   return jwt.decode(token);
 }
 
-export const APPLICATION_JSON = 'application/json';
-
 export function tryParseJsonString(value: any): any {
   try {
     return JSON.parse(value);

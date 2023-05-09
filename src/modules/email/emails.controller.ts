@@ -2,14 +2,14 @@ import { Body, Controller, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { EmailService } from './email.service';
 import { EmailDto } from './dto/test-mail.dto';
-import { ACCESS_TOKEN_HEADER_NAME } from 'src/shared/constants';
+import { AUTH_HEADERS } from 'src/shared/constants';
 import { SentMessageInfo } from 'nodemailer';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CommonErrorResponses } from 'src/shared/common-swagger';
 
 @Controller('emails')
 @ApiTags('Emails')
-@ApiBearerAuth(ACCESS_TOKEN_HEADER_NAME)
+@ApiBearerAuth(AUTH_HEADERS.ACCESS_TOKEN)
 export class EmailController {
   constructor(private readonly emailService: EmailService) {}
 
