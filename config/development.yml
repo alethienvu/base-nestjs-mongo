@@ -20,8 +20,11 @@ mongodb:
   uri: mongodb+srv://thudantd:3au3ks08vV5B0cil@alecluster.7way4av.mongodb.net/test
 
 redis:
-  host: 127.0.0.1
-  port: 6379
+  standalone:
+    host: 127.0.0.1
+    port: 6379
+    pass: null
+  sendEmailQueue: 'sendEmailQueue'
 
 mail:
   account: MAIL_ACCOUNT

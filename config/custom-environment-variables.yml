@@ -24,6 +24,7 @@ redis:
   standalone:
     host: REDIS_HOST
     port: REDIS_PORT
+    pass: REDIS_PASSWORD
   sendEmailQueue: 'sendEmailQueue'
 
 mail:
