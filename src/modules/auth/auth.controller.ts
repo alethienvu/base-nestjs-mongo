@@ -7,9 +7,10 @@ import { ResponseLogin } from '../../modules/auth/dto/response-login.dto';
 import { JwtAuthGuard } from '../../modules/auth/guards/jwt-auth.guard';
 import { UsersService } from '../../modules/users/users.service';
 import { IUser } from '../users/users.interface';
-import { UserID } from '../../shared/decorators/get-user-id.decorator';
+import { UserID } from '../../shared/decorators/user-id.decorator';
 import { AUTH_HEADERS } from '../../shared/constants';
 import { CommonErrorResponses } from 'src/shared/decorators/common-error.decorator';
+import { AccessToken } from 'src/shared/decorators/access-token.decorator';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -67,8 +68,9 @@ export class AuthController {
     type: RefreshAccessTokenDto,
   })
   async refreshAccessToken(
+    @AccessToken() accessToken: string,
     @Body() refreshAccessTokenDto: RefreshAccessTokenDto,
   ): Promise<Partial<ResponseLogin>> {
-    return await this.authService.refreshAccessToken(refreshAccessTokenDto);
+    return await this.authService.refreshAccessToken(accessToken, refreshAccessTokenDto);
   }
 }

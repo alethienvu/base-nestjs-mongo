@@ -9,6 +9,8 @@ import { AuthController } from '../../modules/auth/auth.controller';
 import { CacheModule } from '@nestjs/cache-manager';
 import { UsersService } from '../users/users.service';
 import { EmailModule } from '../email/emails.module';
+import { redisStore } from 'cache-manager-redis-yet';
+import { redisConfig } from 'src/configs/redis.config';
 
 @Module({
   imports: [
@@ -18,8 +20,14 @@ import { EmailModule } from '../email/emails.module';
       secret: jwtConstants.accessTokenSecret,
       signOptions: { expiresIn: jwtConstants.accessTokenExpiry },
     }),
-    CacheModule.register({
+    CacheModule.registerAsync({
       isGlobal: true,
+      useFactory: async () => ({
+        store: await redisStore({
+          url: redisConfig.url,
+          password: redisConfig.pass,
+        }),
+      }),
     }),
     EmailModule,
   ],

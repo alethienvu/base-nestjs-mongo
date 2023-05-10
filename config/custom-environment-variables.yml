@@ -25,6 +25,7 @@ redis:
     host: REDIS_HOST
     port: REDIS_PORT
     pass: REDIS_PASSWORD
+    url: REDIS_URL
   sendEmailQueue: 'sendEmailQueue'
 
 mail:

@@ -3,7 +3,7 @@ import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagg
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dtos/createUser.dto';
-import { UserID } from '../../shared/decorators/get-user-id.decorator';
+import { UserID } from '../../shared/decorators/user-id.decorator';
 import { UpdatePassWordDto, UpdateUserDto } from './dtos/updateUser.dto';
 import { AUTH_HEADERS } from '../../shared/constants';
 import { CommonErrorResponses } from 'src/shared/decorators/common-error.decorator';
