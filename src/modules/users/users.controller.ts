@@ -6,7 +6,8 @@ import { CreateUserDto } from './dtos/createUser.dto';
 import { UserID } from '../../shared/decorators/get-user-id.decorator';
 import { UpdatePassWordDto, UpdateUserDto } from './dtos/updateUser.dto';
 import { AUTH_HEADERS } from '../../shared/constants';
-import { CommonErrorResponses } from 'src/shared/common-swagger';
+import { CommonErrorResponses } from 'src/shared/decorators/common-error.decorator';
+import { TrimSpacePipe } from 'src/pipe/trim.pipe';
 
 @Controller('user')
 @ApiBearerAuth(AUTH_HEADERS.ACCESS_TOKEN)
@@ -42,7 +43,7 @@ export class UsersController {
     status: HttpStatus.CREATED,
     description: 'Created',
   })
-  async updateUser(@UserID() id: string, @Body() updateUser: UpdateUserDto) {
+  async updateUser(@UserID() id: string, @Body(TrimSpacePipe) updateUser: UpdateUserDto) {
     const updatedUser = await this.userService.updateUser(id, updateUser);
     return updatedUser;
   }

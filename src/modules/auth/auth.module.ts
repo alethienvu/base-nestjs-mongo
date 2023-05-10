@@ -7,7 +7,6 @@ import { AuthService } from '../../modules/auth/auth.service';
 import { JwtStrategy } from '../../modules/auth/strategies/jwt.strategy';
 import { AuthController } from '../../modules/auth/auth.controller';
 import { CacheModule } from '@nestjs/cache-manager';
-import { redisConfig } from '../../configs/redis.config';
 import { UsersService } from '../users/users.service';
 import { EmailModule } from '../email/emails.module';
 
@@ -20,7 +19,6 @@ import { EmailModule } from '../email/emails.module';
       signOptions: { expiresIn: jwtConstants.accessTokenExpiry },
     }),
     CacheModule.register({
-      ...redisConfig,
       isGlobal: true,
     }),
     EmailModule,

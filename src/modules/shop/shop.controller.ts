@@ -15,9 +15,10 @@ import { ShopService } from './shop.service';
 import { CreateShopDto, IndexShopInput } from './shop.dto';
 import { IPagination, IPaginationHeader } from 'src/adapters/pagination/pagination.interface';
 import { PaginationInterceptor } from 'src/interceptor/pagination.interceptor';
-import { CommonErrorResponses, CommonQueryRequest } from 'src/shared/common-swagger';
-import { Pagination } from 'src/shared/decorators/pagination.decorator';
+import { CommonQueryRequest, Pagination } from 'src/shared/decorators/pagination.decorator';
 import { IShop } from './shop.interface';
+import { CommonErrorResponses } from 'src/shared/decorators/common-error.decorator';
+import { TrimSpacePipe } from 'src/pipe/trim.pipe';
 
 @Controller('shop')
 @ApiBearerAuth(AUTH_HEADERS.ACCESS_TOKEN)
@@ -58,7 +59,7 @@ export class ShopController {
     description: 'Created',
   })
   @UseGuards(JwtAuthGuard)
-  async createShop(@Body() createShopDto: CreateShopDto) {
+  async createShop(@Body(TrimSpacePipe) createShopDto: CreateShopDto) {
     const createdUser = await this.shopService.createShop(createShopDto);
     return createdUser;
   }

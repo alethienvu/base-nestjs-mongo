@@ -4,7 +4,7 @@ import { AUTH_HEADERS } from 'src/shared/constants';
 import { TasksService } from './tasks.service';
 import { AdminAndSuperAdmin } from 'src/modules/auth/guards/roles.guard';
 import { TaskName } from './tasks.enum';
-import { CommonErrorResponses } from 'src/shared/common-swagger';
+import { CommonErrorResponses } from 'src/shared/decorators/common-error.decorator';
 
 @Controller('schedules')
 @ApiTags('Schedules')

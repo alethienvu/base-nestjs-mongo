@@ -9,7 +9,7 @@ import { UsersService } from '../../modules/users/users.service';
 import { IUser } from '../users/users.interface';
 import { UserID } from '../../shared/decorators/get-user-id.decorator';
 import { AUTH_HEADERS } from '../../shared/constants';
-import { CommonErrorResponses } from 'src/shared/common-swagger';
+import { CommonErrorResponses } from 'src/shared/decorators/common-error.decorator';
 
 @Controller('auth')
 @ApiTags('Auth')
