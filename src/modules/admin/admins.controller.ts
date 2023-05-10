@@ -5,7 +5,7 @@ import { AdminService } from './admins.service';
 import { CreateAdminDto, LockUserDto } from './types/createAdmin.dto';
 import { IUser } from '../users/users.interface';
 import { AUTH_HEADERS } from 'src/shared/constants';
-import { CommonErrorResponses } from 'src/shared/common-swagger';
+import { CommonErrorResponses } from 'src/shared/decorators/common-error.decorator';
 
 @Controller('admin')
 @ApiBearerAuth(AUTH_HEADERS.ACCESS_TOKEN)

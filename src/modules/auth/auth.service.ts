@@ -49,8 +49,11 @@ export class AuthService {
     return res;
   }
 
-  async refreshAccessToken(refreshAccessTokenDto: RefreshAccessTokenDto): Promise<ResponseLogin> {
-    const { refreshToken, accessToken } = refreshAccessTokenDto;
+  async refreshAccessToken(
+    accessToken: string,
+    refreshAccessTokenDto: RefreshAccessTokenDto,
+  ): Promise<ResponseLogin> {
+    const { refreshToken } = refreshAccessTokenDto;
     const oldHashAccessToken = await this.cacheManager.get<string>(
       `${AUTH_CACHE_PREFIX}${refreshToken}`,
     );

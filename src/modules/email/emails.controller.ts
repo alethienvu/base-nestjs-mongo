@@ -5,7 +5,7 @@ import { EmailDto } from './dto/test-mail.dto';
 import { AUTH_HEADERS } from 'src/shared/constants';
 import { SentMessageInfo } from 'nodemailer';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { CommonErrorResponses } from 'src/shared/common-swagger';
+import { CommonErrorResponses } from 'src/shared/decorators/common-error.decorator';
 
 @Controller('emails')
 @ApiTags('Emails')

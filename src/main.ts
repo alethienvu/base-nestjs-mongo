@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { INestApplication, Logger as LoggerCommon, ValidationPipe } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Logger } from 'nestjs-pino';
 
 import * as configBase from 'config';
@@ -77,11 +77,11 @@ async function initializeLightship(app: INestApplication) {
 bootstrap()
   .then(() => {
     const hostname = getHost();
-    LoggerCommon.log(`Started on http://${hostname}${configBase.get('service.baseUrl')}`);
-    LoggerCommon.log(
-      `Docs available on http://${hostname}${configBase.get('service.docsBaseUrl')}`,
+    console.log(` 💗💗💗 Started on http://${hostname}${configBase.get('service.baseUrl')}`);
+    console.log(
+      ` 💻💻💻 Docs available on http://${hostname}${configBase.get('service.docsBaseUrl')}`,
     );
   })
   .catch((error) => {
-    LoggerCommon.error('Bootstrap starting error ', error);
+    console.error('💀💀💀 Bootstrap starting error ', error);
   });
