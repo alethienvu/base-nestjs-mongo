@@ -4,7 +4,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { UserID } from '../../shared/decorators/user-id.decorator';
-import { UpdatePassWordDto, UpdateUserDto } from './dtos/updateUser.dto';
+import { ForgotPassDto, UpdatePassWordDto, UpdateUserDto } from './dtos/updateUser.dto';
 import { AUTH_HEADERS } from '../../shared/constants';
 import { CommonErrorResponses } from 'src/shared/decorators/common-error.decorator';
 import { TrimSpacePipe } from 'src/pipe/trim.pipe';
@@ -62,5 +62,20 @@ export class UsersController {
   })
   async changePass(@UserID() id: string, @Body() changePassWordDto: UpdatePassWordDto) {
     return await this.userService.changePassWord(id, changePassWordDto);
+  }
+
+  @Put('/forgot-password')
+  @ApiOperation({
+    operationId: 'forgot-password',
+    description: 'Forgot password',
+    summary: 'Forgot password',
+  })
+  @CommonErrorResponses()
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Successful',
+  })
+  async forgotPass(@Body() forgotPassDto: ForgotPassDto) {
+    return await this.userService.forgotPass(forgotPassDto);
   }
 }

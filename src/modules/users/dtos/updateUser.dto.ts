@@ -51,3 +51,8 @@ export class UpdatePassWordDto {
   @ApiProperty({ required: true })
   readonly new_pass: string;
 }
+export class ForgotPassDto {
+  @IsString()
+  @ApiProperty({ required: true })
+  readonly email: string;
+}
