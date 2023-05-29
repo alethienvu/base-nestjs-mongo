@@ -11,9 +11,10 @@ import { handleApiClientError } from '../../errors/errors';
 import { CreateUserDto } from './dtos/createUser.dto';
 import * as crypto from 'crypto';
 import { UserRole, UserStatus } from '../../shared/enum/users.const';
-import { UpdatePassWordDto, UpdateUserDto } from './dtos/updateUser.dto';
+import { ForgotPassDto, UpdatePassWordDto, UpdateUserDto } from './dtos/updateUser.dto';
 import { EmailService } from '../email/email.service';
 import { updateObject } from 'src/shared/helpers';
+import { generatePassword } from 'src/shared/utils';
 
 @Injectable()
 export class UsersService {
@@ -67,7 +68,7 @@ export class UsersService {
   async createUser(createUserDto: CreateUserDto) {
     const { email, password } = createUserDto;
     const sameEmailAddress = await this.checkUserEmailAddressExisted(email);
-    if (!!sameEmailAddress) {
+    if (sameEmailAddress) {
       throw new BadRequestException(`Email is already taken`);
     }
     const hashPass = crypto.createHmac('sha256', password).digest('hex');
@@ -111,6 +112,23 @@ export class UsersService {
     }
     currentUser.password = crypto.createHmac('sha256', new_pass).digest('hex');
     const updatedUser = await this.userRepository.save(currentUser);
+    return updatedUser;
+  }
+
+  async forgotPass(forgotPassDto: ForgotPassDto) {
+    const user = await this.findUserByEmailAddress(forgotPassDto.email);
+    if (!user) {
+      throw new NotFoundException(`Not found user have email: ${forgotPassDto.email}`);
+    }
+    const userWPass = await this.findUserWithPasswordById(user.id);
+    const newPass = generatePassword();
+    userWPass.password = crypto.createHmac('sha256', newPass).digest('hex');
+    const updatedUser = await this.userRepository.save(userWPass);
+    this.mailService.sendSignupMail({
+      email: forgotPassDto.email,
+      subject: 'Your Password Updated!',
+      content: `Your new password is: ${newPass}`,
+    });
     return updatedUser;
   }
 }

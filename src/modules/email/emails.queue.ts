@@ -13,18 +13,19 @@ const redisQueue: string = config.get('redis.sendEmailQueue');
 export class SendEmailQueueJob {
   constructor(
     private readonly emailsService: EmailService,
-    private readonly emailRepository: EmailRepository,
+    private readonly _emailRepository: EmailRepository,
   ) {}
 
   @Process({ name: EmailQueueName.SENDALL })
-  async sendReportToEmail(
+  async sendSignUpEmail(
     job: Job<{
       userId: string;
       email: string;
       content: string;
     }>,
   ) {
-    this.emailRepository.save({ userId: job.data.userId, email: job.data.email, status: 'SEND' });
+    // Save log email was sent
+    // this._emailRepository.save({ userId: job.data.userId, email: job.data.email, status: 'SEND' });
     return this.emailsService.sendSignupMail({
       subject: `[SIGNUP SUCCESS]: Welcome to Limall`,
       email: job.data.email,

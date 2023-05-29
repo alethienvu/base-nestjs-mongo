@@ -27,5 +27,6 @@ module.exports = {
       'warn',
       { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
     ],
+    '@typescript-eslint/no-extra-boolean-cast': 'off',
   },
 };
