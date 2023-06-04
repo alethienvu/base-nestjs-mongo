@@ -5,9 +5,13 @@ import Redis from 'ioredis';
 import { redisConfig } from '../../configs/redis.config';
 
 const redisQueueEmails: string = config.get('redis.sendEmailQueue');
+const sendNotifications: string = config.get('redis.sendNotificationsQeueu');
 
 export const SendEmailQueue = BullModule.registerQueue({
   name: redisQueueEmails,
+});
+export const SendNotificationsQueue = BullModule.registerQueue({
+  name: sendNotifications,
 });
 
 @Global()
@@ -30,8 +34,9 @@ export const SendEmailQueue = BullModule.registerQueue({
       },
     }),
     SendEmailQueue,
+    SendNotificationsQueue,
   ],
   providers: [],
-  exports: [SendEmailQueue],
+  exports: [SendEmailQueue, SendNotificationsQueue],
 })
 export class QueuesModule {}

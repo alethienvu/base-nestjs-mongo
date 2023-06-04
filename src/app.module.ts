@@ -14,6 +14,7 @@ import { TasksModule } from './modules/cronjob/tasks/tasks.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ShopModule } from './modules/shop/shop.module';
 import { UserMiddleware } from './middleware/user.middleware';
+import { NotificationModule } from './modules/notifications/notifications.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { UserMiddleware } from './middleware/user.middleware';
     ScheduleModule.forRoot(),
     TasksModule,
     ShopModule,
+    NotificationModule,
   ],
   providers: [
     {

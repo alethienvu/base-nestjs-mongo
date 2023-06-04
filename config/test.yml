@@ -27,6 +27,7 @@ redis:
     pass: null
     url: redis://localhost:6379
   sendEmailQueue: 'sendEmailQueue'
+  sendNotificationsQeueu: 'sendNotificationsQeueu'
 
 mail:
   account: MAIL_ACCOUNT

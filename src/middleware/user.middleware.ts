@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import { Injectable, NestMiddleware } from '@nestjs/common';
+import { Injectable, NestMiddleware, UnauthorizedException } from '@nestjs/common';
 import * as httpContext from 'express-http-context';
 import { decodeJWTToken } from '../shared/helpers';
 import { AUTH_HEADERS } from 'src/shared/constants';
@@ -42,6 +42,10 @@ export function getUserId() {
  */
 export function getUserData(key?: keyof IJwtPayload) {
   if (!key) {
+    const userData = httpContext.get('user');
+    if (!userData) {
+      throw new UnauthorizedException();
+    }
     return httpContext.get('user');
   }
   return httpContext.get('user') ? (httpContext.get('user') as IJwtPayload)[key] : null;
