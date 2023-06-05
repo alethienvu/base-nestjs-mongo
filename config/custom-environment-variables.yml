@@ -27,6 +27,7 @@ redis:
     pass: REDIS_PASSWORD
     url: REDIS_URL
   sendEmailQueue: 'sendEmailQueue'
+  sendNotificationsQeueu: 'sendNotificationsQeueu'
 
 mail:
   account: MAIL_ACCOUNT
@@ -37,3 +38,7 @@ mail:
 
 logger:
   enabled: LOGGER_ENABLED
+
+notification:
+  publicKey: VITE_WEB_PUSH_PUBLIC
+  privateKey: VITE_WEB_PUSH_PRIVATE

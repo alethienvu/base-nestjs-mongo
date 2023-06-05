@@ -7,9 +7,9 @@ import { EmailQueueName } from './emails.enum';
 import { EmailRepository } from './emails.repository';
 
 const config = getConfig();
-const redisQueue: string = config.get('redis.sendEmailQueue');
+const emailQueue: string = config.get('redis.sendEmailQueue');
 
-@Processor(redisQueue)
+@Processor(emailQueue)
 export class SendEmailQueueJob {
   constructor(
     private readonly emailsService: EmailService,

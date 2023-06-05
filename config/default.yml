@@ -27,6 +27,7 @@ redis:
     pass: null
     url: redis://localhost:6379
   sendEmailQueue: 'sendEmailQueue'
+  sendNotificationsQeueu: 'sendNotificationsQeueu'
 
 mail:
   account: MAIL_ACCOUNT
@@ -37,3 +38,7 @@ mail:
 
 logger:
   enabled: true
+
+notification:
+  publicKey: VITE_WEB_PUSH_PUBLIC
+  privateKey: VITE_WEB_PUSH_PRIVATE

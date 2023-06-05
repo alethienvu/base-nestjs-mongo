@@ -51,7 +51,7 @@ export class AdminService {
   async createAdmin(createAdminDto: CreateAdminDto): Promise<IUser> {
     const { email, password, role } = createAdminDto;
     const sameEmailAddress = await this.checkUserEmailAddressExisted(email);
-    if (!!sameEmailAddress) {
+    if (sameEmailAddress) {
       throw new BadRequestException(`Email is already taken`);
     }
     const hashPass = crypto.createHmac('sha256', password).digest('hex');
