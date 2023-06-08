@@ -1,5 +1,5 @@
 import { getBaseSchema } from '../../shared/mongo.helper';
-import { IUser } from './users.interface';
+import { IAvatar, IUser } from './users.interface';
 
 const UsersSchema = getBaseSchema<IUser>();
 UsersSchema.add({
@@ -14,4 +14,13 @@ UsersSchema.add({
   status: { type: String, required: true },
   password: { type: String, select: false },
 });
-export { UsersSchema };
+
+const AvatarSchema = getBaseSchema<IAvatar>();
+AvatarSchema.add({
+  fileName: { type: String, required: true },
+  type: { type: String, required: true },
+  stream: { type: Buffer, required: true },
+  userId: { type: String, required: true },
+});
+
+export { UsersSchema, AvatarSchema };

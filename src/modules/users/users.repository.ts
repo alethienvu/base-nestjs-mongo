@@ -3,12 +3,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ObjectId } from 'mongodb';
 import { ClientSession, Model, QueryOptions, SaveOptions } from 'mongoose';
 import { DbModel } from '../../shared/constants';
-import { IUser } from './users.interface';
+import { IAvatar, IUser } from './users.interface';
 import { buildFindParamsObject } from 'src/shared/data.prettifier';
 
 @Injectable()
 export class UsersRepository implements OnApplicationBootstrap {
-  constructor(@InjectModel(DbModel.Users) private readonly model: Model<IUser>) {}
+  constructor(
+    @InjectModel(DbModel.Users) private readonly model: Model<IUser>,
+    @InjectModel(DbModel.Avatars) private readonly avatar: Model<IAvatar>,
+  ) {}
 
   async onApplicationBootstrap(): Promise<void> {
     await this.createCollection();
@@ -53,8 +56,27 @@ export class UsersRepository implements OnApplicationBootstrap {
     return new this.model(docs).save(options);
   }
 
+  async saveAvatar(docs: object | object[], options?: SaveOptions) {
+    if (Array.isArray(docs)) {
+      const result: object[] = [];
+      for (const doc of docs) {
+        result.push(await new this.avatar(doc).save(options));
+      }
+      return result;
+    }
+    return new this.avatar(docs).save(options);
+  }
+
   async findById(id: string) {
     return this.model.findById({ _id: new ObjectId(id) }).exec();
+  }
+
+  async findAvatarByUserId(userId: string) {
+    return this.avatar.findOne({ userId }).exec();
+  }
+
+  async deleteOneAvatar(id: string) {
+    return this.avatar.deleteOne({ _id: new ObjectId(id) }).exec();
   }
 
   async findOne(findParams) {

@@ -20,4 +20,7 @@ export enum DbModel {
   Emails = 'Emails',
   Shop = 'Shop',
   Subcriptions = 'Subcriptions',
+  Avatars = 'Avatars',
 }
+export const MaxImgSize = 5 * 1024 * 1000;
+export const allowFileType = 'image/jpeg';

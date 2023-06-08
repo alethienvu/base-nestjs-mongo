@@ -1,0 +1,43 @@
+service:
+  name: npm_package_name
+  node_env: production
+  baseUrl: /api/v1
+  docsBaseUrl: /docs/api/v1
+  jwt_access_token_secret: JWT_ACCESS_TOKEN_SECRET
+  jwt_access_token_expiration_time: JWT_ACCESS_TOKEN_EXPIRATION_TIME
+  jwt_refresh_token_secret: JWT_REFRESH_TOKEN_SECRET
+  jwt_refresh_token_expiration_time: JWT_REFRESH_TOKEN_EXPIRATION_TIME
+  api_version: npm_package_version
+  app_version: npm_package_version
+
+server:
+  host: SERVER_HOST
+  port: SERVER_PORT
+  hostname: SERVER_HOSTNAME
+  swaggerSchema: SWAGGER_SCHEMA
+
+mongodb:
+  uri: MONGODB_URI
+
+redis:
+  standalone:
+    host: REDIS_HOST
+    port: REDIS_PORT
+    pass: REDIS_PASSWORD
+    url: REDIS_URL
+  sendEmailQueue: 'sendEmailQueue'
+  sendNotificationsQeueu: 'sendNotificationsQeueu'
+
+mail:
+  account: MAIL_ACCOUNT
+  password: MAIL_PASSWORD
+  from: MAIL_FROM
+  service: MAIL_SERVICE
+  enable: MAIL_ENABLE
+
+logger:
+  enabled: LOGGER_ENABLED
+
+notification:
+  publicKey: VITE_WEB_PUSH_PUBLIC
+  privateKey: VITE_WEB_PUSH_PRIVATE

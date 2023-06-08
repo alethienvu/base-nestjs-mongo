@@ -2,8 +2,8 @@ service:
   name: npm_package_name
   description: Base nestjs mongo
   node_env: NODE_ENV
-  baseUrl: /api/v1
-  docsBaseUrl: /docs/api/v1
+  baseUrl: APP_PREFIX
+  docsBaseUrl: APP_DOCS
   jwt_access_token_secret: JWT_ACCESS_TOKEN_SECRET
   jwt_access_token_expiration_time: JWT_ACCESS_TOKEN_EXPIRATION_TIME
   jwt_refresh_token_secret: JWT_REFRESH_TOKEN_SECRET
@@ -18,7 +18,7 @@ server:
   swaggerSchema: http
 
 mongodb:
-  uri: mongodb+srv://thudantd:3au3ks08vV5B0cil@alecluster.7way4av.mongodb.net/test
+  uri: MONGODB_URI
 
 redis:
   standalone:

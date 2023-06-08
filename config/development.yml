@@ -1,6 +1,6 @@
 service:
   name: npm_package_name
-  node_env: NODE_ENV
+  node_env: development
   baseUrl: /api/v1
   docsBaseUrl: /docs/api/v1
   jwt_access_token_secret: JWT_ACCESS_TOKEN_SECRET
@@ -17,7 +17,7 @@ server:
   swaggerSchema: http
 
 mongodb:
-  uri: mongodb+srv://thudantd:3au3ks08vV5B0cil@alecluster.7way4av.mongodb.net/test
+  uri: MONGODB_URI
 
 redis:
   standalone:

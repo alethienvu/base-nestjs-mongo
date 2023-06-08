@@ -1,6 +1,12 @@
 import { Gender, UserRole, UserStatus } from '../../shared/enum/users.const';
 import { BaseDocument } from '../../shared/mongo.helper';
 
+export interface IAvatarBase {
+  fileName: string;
+  type: string;
+  stream: any;
+  userId: string;
+}
 export interface IUserBase {
   id: string;
   email: string;
@@ -17,3 +23,4 @@ export interface IUserBase {
   password: string;
 }
 export interface IUser extends BaseDocument, IUserBase {}
+export interface IAvatar extends BaseDocument, IAvatarBase {}
