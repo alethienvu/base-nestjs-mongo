@@ -7,7 +7,6 @@ import { Logger } from 'nestjs-pino';
 
 import * as configBase from 'config';
 import { getConfig, getHost } from './modules/config/config.provider';
-import { createLightship } from 'lightship';
 import * as httpContext from 'express-http-context';
 import * as express from 'express';
 import * as responseTime from 'response-time';
@@ -29,11 +28,7 @@ async function bootstrap() {
 
   await initializeSwagger(app);
 
-  const lightship = await initializeLightship(app);
-
   await app.listen(config.get<number>('server.port'));
-
-  lightship.signalReady();
 }
 
 function initializeApp(app: INestApplication) {
@@ -62,16 +57,6 @@ function initializeApp(app: INestApplication) {
     }),
   );
   app.setGlobalPrefix(config.get('service.baseUrl'));
-}
-
-async function initializeLightship(app: INestApplication) {
-  const lightship = await createLightship();
-
-  lightship.registerShutdownHandler(async () => {
-    await app.close();
-  });
-
-  return lightship;
 }
 
 bootstrap()

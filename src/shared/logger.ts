@@ -9,7 +9,15 @@ export interface IPinoConfig {
 
 const pinoConfig: IPinoConfig = config.get<IPinoConfig>('logger');
 
-export const logger = pino(pinoConfig);
+export const logger = pino({
+  ...pinoConfig,
+  transport: {
+    target: 'pino-pretty',
+    options: {
+      colorize: true,
+    },
+  },
+});
 
 enum LogLevel {
   Error,

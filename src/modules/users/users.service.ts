@@ -1,12 +1,14 @@
 import {
   BadRequestException,
+  HttpException,
+  HttpStatus,
   Inject,
   Injectable,
   NotFoundException,
   forwardRef,
 } from '@nestjs/common';
 import { UsersRepository } from './users.repository';
-import { IUser } from './users.interface';
+import { IAvatarBase, IUser } from './users.interface';
 import { handleApiClientError } from '../../errors/errors';
 import { CreateUserDto } from './dtos/createUser.dto';
 import * as crypto from 'crypto';
@@ -15,7 +17,10 @@ import { ForgotPassDto, UpdatePassWordDto, UpdateUserDto } from './dtos/updateUs
 import { EmailService } from '../email/email.service';
 import { updateObject } from 'src/shared/helpers';
 import { generatePassword } from 'src/shared/utils';
-
+import { extname } from 'path';
+import { readFileSync, unlinkSync } from 'fs';
+import { Readable } from 'stream';
+import { errorLog } from 'src/shared/logger';
 @Injectable()
 export class UsersService {
   constructor(
@@ -101,6 +106,49 @@ export class UsersService {
     const updatedUser = await this.userRepository.save(currentUser);
 
     return updatedUser;
+  }
+
+  async updateAvatar(id: string, file: Express.Multer.File) {
+    const currentUser = await this.findUserById(id);
+    const savedAvatar = await this.userRepository.findAvatarByUserId(id);
+    if (savedAvatar) {
+      await this.userRepository.deleteOneAvatar(savedAvatar.id);
+    }
+    const img = readFileSync(file.path);
+    const encode_img = img.toString('base64');
+    const avatar: IAvatarBase = {
+      fileName: `ava-${Date.now()}${extname(file.originalname)}`,
+      type: file.mimetype,
+      stream: Buffer.from(encode_img, 'base64'),
+      userId: currentUser.id,
+    };
+    await this.userRepository.saveAvatar(avatar);
+    // Delete file saved in server
+    try {
+      unlinkSync(file.path);
+    } catch (error) {
+      errorLog(error);
+    }
+    return avatar.fileName;
+  }
+
+  async getStreamAvatarById(id: string): Promise<{ stream: Readable; headers: any }> {
+    const image = await this.userRepository.findAvatarByUserId(id);
+
+    if (!image) {
+      throw new HttpException('Image not found', HttpStatus.NOT_FOUND);
+    }
+
+    const stream = Readable.from(image.stream);
+
+    // Set response headers
+    const headers = {
+      'Content-Type': image.type,
+      'Content-Length': image.stream.length,
+      'Content-Disposition': `attachment; filename="${image.fileName}"`,
+    };
+
+    return { stream, headers };
   }
 
   async changePassWord(id: string, updatePassWordDto: UpdatePassWordDto) {
