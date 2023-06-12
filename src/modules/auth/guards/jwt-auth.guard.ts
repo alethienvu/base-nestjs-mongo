@@ -9,11 +9,15 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     try {
       const request = context.switchToHttp().getRequest();
+      const exp = request.user?.exp * 1000;
+      if (exp <= Date.now()) {
+        throw new UnauthorizedException('Token expired!');
+      }
       const token = request.get(AUTH_HEADERS.ACCESS_TOKEN);
       const payload: IJwtPayload = jwtDecode(token);
       return !!payload;
     } catch (e) {
-      throw new UnauthorizedException(e);
+      throw new UnauthorizedException(e?.message);
     }
   }
 }
